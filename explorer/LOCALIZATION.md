@@ -20,6 +20,8 @@
 
 沿用官方入口，在 `explorer/` 安装锁文件中的依赖并运行 `npm run build`。生成 `../semantica/static/`，同时带入 Monaco 原生代码编辑器及中文资源；使用页面时不从外部 CDN 下载编辑器。
 
+Monaco 0.55.1 的中文 AMD 模块名为 `vs/nls.messages.zh-cn.js`，包内文件名为 `nls.messages.zh-cn.js.js`。构建和开发服务为原生文件提供单扩展名别名，内容不变；AMD `baseUrl` 指向后台已有的 `/assets/monaco/` 挂载目录。
+
 将完整 `semantica/static/` 部署到同版本原生 Python 服务的静态目录。保持后台、图谱文件、认证、主机绑定与数据库不变。替换前保留原版静态目录；回退只需恢复它。
 
 GitHub 源码：https://github.com/zssggle-rgb/semantica 。本分支以 `upstream-v0.7.0` 为 PR 基线，便于只查看该版本的中文修改。

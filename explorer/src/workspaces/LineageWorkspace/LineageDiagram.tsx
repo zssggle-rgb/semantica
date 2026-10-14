@@ -1,4 +1,5 @@
 import { uiText } from "../../i18n";
+import { flowLabels } from "../../i18n/flow";
 /**
  * src/workspaces/LineageWorkspace/LineageDiagram.tsx
  */
@@ -156,7 +157,7 @@ export function LineageDiagram() {
       ) : null}
 
       {activeId ? (
-        <ReactFlow nodes={nodes} edges={edges} fitView>
+        <ReactFlow nodes={nodes} edges={edges} fitView ariaLabelConfig={flowLabels}>
           <Background color="rgba(74,163,255,0.08)" gap={24} />
           <Controls />
         </ReactFlow>

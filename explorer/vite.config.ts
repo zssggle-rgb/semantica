@@ -18,7 +18,7 @@ export default defineConfig({
       name: 'bundled-monaco-resources',
       configureServer(server) {
         const resourceRoot = path.resolve(__dirname, 'node_modules/monaco-editor/min/vs')
-        server.middlewares.use('/vendor/monaco/vs', (request, response, next) => {
+        server.middlewares.use('/assets/monaco/vs', (request, response, next) => {
           const resourcePath = path.resolve(resourceRoot, `.${new URL(request.url ?? '/', 'http://localhost').pathname}`)
           if (!resourcePath.startsWith(`${resourceRoot}${path.sep}`) || !existsSync(resourcePath)) {
             next()
@@ -32,7 +32,7 @@ export default defineConfig({
       closeBundle() {
         cpSync(
           path.resolve(__dirname, 'node_modules/monaco-editor/min/vs'),
-          path.resolve(__dirname, '../semantica/static/vendor/monaco/vs'),
+          path.resolve(__dirname, '../semantica/static/assets/monaco/vs'),
           { recursive: true },
         )
       },

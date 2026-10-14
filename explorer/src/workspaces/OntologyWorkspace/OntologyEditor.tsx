@@ -1,4 +1,5 @@
 import { uiText } from "../../i18n";
+import { flowLabels } from "../../i18n/flow";
 import { useCallback, useEffect, useState } from "react";
 import {
   ReactFlow,
@@ -600,6 +601,7 @@ export function OntologyEditor() {
       <div style={{ display: "flex", flex: 1, minHeight: 0, minWidth: 0 }}>
         <div style={{ flex: 1, minHeight: 0, minWidth: 0, position: "relative" }}>
           <ReactFlow
+            ariaLabelConfig={flowLabels}
             className="ontology-editor-flow"
             nodes={nodes}
             edges={edges}

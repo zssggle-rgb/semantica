@@ -1,4 +1,11 @@
 {
+  "Control Panel": "画布控制面板",
+  "Toggle Interactivity": "切换交互模式",
+  "Mini Map": "缩略图",
+  "Handle": "连接点",
+  "Press enter or space to select a node. Press delete to remove it and escape to cancel.": "按回车或空格选择节点，按 Delete 删除，按 Esc 取消。",
+  "Press enter or space to select a node. You can then use the arrow keys to move the node around. Press delete to remove it and escape to cancel.": "按回车或空格选择节点，再用方向键移动；按 Delete 删除，按 Esc 取消。",
+  "Press enter or space to select an edge. You can then press delete to remove it or escape to cancel.": "按回车或空格选择关系，按 Delete 删除，按 Esc 取消。",
   "Layout is still settling": "布局仍在稳定中",
   "Disabled by toggle": "已通过开关关闭",
   "No active path": "没有选中的路径",

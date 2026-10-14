@@ -1,4 +1,10 @@
 {
+  "IMPORT": "IMPORT",
+  "EXPORT": "EXPORT",
+  "MERGE": "MERGE",
+  "DELETE": "DELETE",
+  "INFER": "INFER",
+  "VOCAB": "VOCAB",
   "Control Panel": "Control Panel",
   "Toggle Interactivity": "Toggle Interactivity",
   "Mini Map": "Mini Map",

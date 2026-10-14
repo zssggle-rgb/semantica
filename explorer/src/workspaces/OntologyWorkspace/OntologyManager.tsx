@@ -271,10 +271,10 @@ export function OntologyManager() {
       if (!res.ok) throw new Error(uiText("HTTP {{v0}}", { v0: (res.status) }));
       const data = await res.json();
       setEntries(data);
-      if (res.status === 207) flashMsg("err", data.message || "Warning: Partial success loading registry.");
+      if (res.status === 207) flashMsg("err", data.message || uiText("Warning: Partial success loading registry."));
     } catch {
       setEntries([]);
-      flashMsg("err", "Failed to load ontology registry");
+      flashMsg("err", uiText("Failed to load ontology registry"));
     } finally {
       setLoading(false);
     }
@@ -291,11 +291,11 @@ export function OntologyManager() {
         const data = await res.json();
         if (ignore) return;
         setEntries(data);
-        if (res.status === 207) flashMsg("err", data.message || "Warning: Partial success loading registry.");
+        if (res.status === 207) flashMsg("err", data.message || uiText("Warning: Partial success loading registry."));
       } catch {
         if (!ignore) {
           setEntries([]);
-          flashMsg("err", "Failed to load ontology registry");
+          flashMsg("err", uiText("Failed to load ontology registry"));
         }
       } finally {
         if (!ignore) setLoading(false);
@@ -316,7 +316,7 @@ export function OntologyManager() {
         prev.map((e) => (e.uri === uri ? { ...e, enabled: data.enabled } : e))
       );
     } catch {
-      flashMsg("err", "Could not toggle ontology");
+      flashMsg("err", uiText("Could not toggle ontology"));
     }
   }, []);
 
@@ -326,10 +326,10 @@ export function OntologyManager() {
         method: "POST",
       });
       if (!res.ok) throw new Error(uiText("Refresh failed"));
-      flashMsg("ok", "Ontology refreshed");
+      flashMsg("ok", uiText("Ontology refreshed"));
       fetchRegistry();
     } catch {
-      flashMsg("err", "Refresh failed — check source URL");
+      flashMsg("err", uiText("Refresh failed — check source URL"));
     }
   }, [fetchRegistry]);
 
@@ -341,9 +341,9 @@ export function OntologyManager() {
       if (!res.ok) throw new Error(uiText("Remove failed"));
       setEntries((prev) => prev.filter((e) => e.uri !== uri));
       if (selectedEntry?.uri === uri) setSelectedEntry(null);
-      flashMsg("ok", "Removed from registry");
+      flashMsg("ok", uiText("Removed from registry"));
     } catch {
-      flashMsg("err", "Could not remove ontology");
+      flashMsg("err", uiText("Could not remove ontology"));
     }
   }, [selectedEntry]);
 
@@ -390,7 +390,7 @@ export function OntologyManager() {
           </div>
 
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-            {([uiText("all"), uiText("owl"), uiText("skos"), uiText("internal"), uiText("external")] as const).map((f) => (
+            {(["all", "owl", "skos", "internal", "external"] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => setStatusFilter(f)}
@@ -399,7 +399,7 @@ export function OntologyManager() {
                   ...(statusFilter === f ? filterPillActive : filterPillIdle),
                 }}
               >
-                {f === "all" ? uiText("All") : f.toUpperCase()}
+                {f === "all" ? uiText("All") : uiText(f).toUpperCase()}
               </button>
             ))}
           </div>

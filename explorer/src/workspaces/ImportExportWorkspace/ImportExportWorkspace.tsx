@@ -38,11 +38,11 @@ export function ImportExportWorkspace() {
       const res = await fetch("/api/import", { method: "POST", body: fd });
       if (!res.ok) { const e = await res.json(); throw new Error(e.detail || uiText("Import failed")); }
       const data = await res.json();
-      showToast("success", `Imported ${data.nodes_imported} nodes · ${data.edges_imported} edges`);
-      logEvent("import", `Imported ${data.nodes_imported} nodes · ${data.edges_imported} edges from ${file.name}`, { file: file.name });
+      showToast("success", uiText("Imported {{v0}} nodes · {{v1}} edges", { v0: (data.nodes_imported), v1: (data.edges_imported) }));
+      logEvent("import", uiText("Imported {{v0}} nodes · {{v1}} edges from {{v2}}", { v0: (data.nodes_imported), v1: (data.edges_imported), v2: (file.name) }), { file: file.name });
       setFile(null);
     } catch (e: unknown) {
-      showToast("error", e instanceof Error ? e.message : "Import failed");
+      showToast("error", e instanceof Error ? e.message : uiText("Import failed"));
     } finally { setIsUploading(false); }
   }
 
@@ -64,10 +64,10 @@ export function ImportExportWorkspace() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      showToast("success", `Export ready — semantica_export.${exportFormat}`);
-      logEvent("export", `Exported graph as ${exportFormat.toUpperCase()}`, { format: exportFormat });
+      showToast("success", uiText("Export ready — semantica_export.{{v0}}", { v0: (exportFormat) }));
+      logEvent("export", uiText("Exported graph as {{v0}}", { v0: (exportFormat.toUpperCase()) }), { format: exportFormat });
     } catch (e: unknown) {
-      showToast("error", e instanceof Error ? e.message : "Export failed");
+      showToast("error", e instanceof Error ? e.message : uiText("Export failed"));
     } finally { setIsExporting(false); }
   }
 

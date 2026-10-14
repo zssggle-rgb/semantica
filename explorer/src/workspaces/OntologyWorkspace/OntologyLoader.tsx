@@ -534,7 +534,7 @@ function CreateNewPanel({ onLoaded }: { onLoaded: () => void }) {
   return (
     <div style={panelBodyStyle}>
       <div style={{ display: "flex", gap: 6 }}>
-        {([uiText("scratch"), uiText("data"), uiText("text")] as CreateMode[]).map((m) => (
+        {(["scratch", "data", "text"] as CreateMode[]).map((m) => (
           <button
             key={m}
             onClick={() => setCreateMode(m)}
@@ -640,7 +640,7 @@ export function OntologyLoader({ onLoaded, onClose }: LoaderProps) {
         </div>
 
         <div style={{ display: "flex", gap: 2, padding: "0 20px", borderBottom: "1px solid rgba(127,208,255,0.1)" }}>
-          {([uiText("url"), uiText("file"), uiText("create")] as LoaderMode[]).map((m) => (
+          {(["url", "file", "create"] as LoaderMode[]).map((m) => (
             <button
               key={m}
               onClick={() => setMode(m)}

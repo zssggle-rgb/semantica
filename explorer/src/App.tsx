@@ -75,9 +75,9 @@ type GraphStatsPayload = {
 type ConnectionStatus = 'checking' | 'online' | 'offline';
 
 const CONNECTION_STATUS_LABEL: Record<ConnectionStatus, string> = {
-  checking: 'Connecting…',
-  online: 'System Online',
-  offline: 'Backend Unreachable',
+  checking: uiText('Connecting…'),
+  online: uiText('System Online'),
+  offline: uiText('Backend Unreachable'),
 };
 
 const queryClient = new QueryClient();
@@ -1561,10 +1561,10 @@ function WelcomeScreen({
 
   const isOnline = stats.status === 'online';
   const metrics: LandingMetric[] = [
-    { label: uiText("Knowledge nodes"), value: formatMetric(stats.nodes, 'Live'), tone: 'cyan' },
-    { label: uiText("Relationships mapped"), value: formatMetric(stats.edges, 'Ready'), tone: 'mint' },
+    { label: uiText("Knowledge nodes"), value: formatMetric(stats.nodes, uiText('Live')), tone: 'cyan' },
+    { label: uiText("Relationships mapped"), value: formatMetric(stats.edges, uiText('Ready')), tone: 'mint' },
     { label: uiText("Graph modes"), value: '3', tone: 'amber' },
-    { label: isOnline ? 'Dataset online' : 'Ready to explore', value: isOnline ? 'Active' : 'Standby', tone: 'rose' },
+    { label: isOnline ? uiText('Dataset online') : uiText('Ready to explore'), value: isOnline ? uiText('Active') : uiText('Standby'), tone: 'rose' },
   ];
 
   const secondaryLaunchers: LandingAction[] = [

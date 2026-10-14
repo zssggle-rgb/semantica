@@ -97,7 +97,7 @@ const AVAILABILITY_KEYS: Record<GraphEffectToggle, keyof GraphDiagnosticsSnapsho
 function renderAvailabilityText(availability: GraphEffectAvailability) {
   if (availability.available) {
     if (typeof availability.visibleSegments === "number" && typeof availability.segmentCap === "number") {
-      return `${availability.reason} - ${availability.visibleSegments}/${availability.segmentCap} segments`;
+      return uiText("{{v0}} - {{v1}}/{{v2}} segments", { v0: (availability.reason), v1: (availability.visibleSegments), v2: (availability.segmentCap) });
     }
     return availability.reason;
   }
@@ -119,7 +119,7 @@ function resolveAvailability(
   return availabilityMap?.[AVAILABILITY_KEYS[key]] ?? {
     enabled,
     available: false,
-    reason: "Waiting for graph runtime",
+    reason: uiText("Waiting for graph runtime"),
   };
 }
 

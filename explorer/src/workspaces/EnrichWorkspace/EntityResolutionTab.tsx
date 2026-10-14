@@ -181,7 +181,7 @@ export function EntityResolutionTab() {
         : [];
       const parsed = parseDuplicates(rawDuplicates);
       setPairs(parsed);
-      logEvent("import", `Dedup scan found ${parsed.length} flagged pair${parsed.length !== 1 ? "s" : ""} (threshold ${threshold.toFixed(2)})`, {
+      logEvent("import", uiText("Dedup scan found {{v0}} flagged pair{{v1}} (threshold {{v2}})", { v0: (parsed.length), v1: (parsed.length !== 1 ? "s" : ""), v2: (threshold.toFixed(2)) }), {
         threshold,
         flagged: parsed.length,
       });
@@ -205,7 +205,7 @@ export function EntityResolutionTab() {
       if (res.status === 207) {
         setScanError(data.message || "Warning: Partial merge.");
       }
-      logEvent("merge", `Merged ${duplicateId} → ${primaryId} · ${data.edges_updated ?? 0} edges redirected`, {
+      logEvent("merge", uiText("Merged {{v0}} → {{v1}} · {{v2}} edges redirected", { v0: (duplicateId), v1: (primaryId), v2: (data.edges_updated ?? 0) }), {
         primary: primaryId,
         duplicate: duplicateId,
         edgesUpdated: data.edges_updated,

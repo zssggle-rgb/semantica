@@ -31,7 +31,7 @@ export function DiffMergeWorkspace() {
       if (data.merged_into) {
         setStatus("success");
         setMsg(`Merged → ${data.merged_into} · ${data.edges_updated ?? 0} edges redirected`);
-        logEvent("merge", `Merged ${duplicateId} → ${data.merged_into} · ${data.edges_updated ?? 0} edges redirected`, {
+        logEvent("merge", uiText("Merged {{v0}} → {{v1}} · {{v2}} edges redirected", { v0: (duplicateId), v1: (data.merged_into), v2: (data.edges_updated ?? 0) }), {
           primary: data.merged_into, duplicate: duplicateId, edgesUpdated: data.edges_updated,
         });
       } else {

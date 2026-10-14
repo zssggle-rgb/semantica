@@ -46,12 +46,12 @@ const ENTITY_TYPE_COLORS: Record<string, string> = {
 };
 
 const ENTITY_TYPE_LABELS: Record<string, string> = {
-  class: "Class",
-  property: "Property",
-  individual: "Individual",
-  concept: "Concept",
-  scheme: "Scheme",
-  unknown: "Entity",
+  class: uiText("Class"),
+  property: uiText("Property"),
+  individual: uiText("Individual"),
+  concept: uiText("Concept"),
+  scheme: uiText("Scheme"),
+  unknown: uiText("Entity"),
 };
 
 function TypeBadge({ entityType }: { entityType: string }) {
@@ -358,7 +358,7 @@ export function OntologySearch() {
         </div>
 
         <div style={typeFilterStyle}>
-          {([uiText("all"), uiText("class"), uiText("property"), uiText("individual"), uiText("concept"), uiText("scheme")] as const).map((t) => (
+          {(["all", "class", "property", "individual", "concept", "scheme"] as const).map((t) => (
             <button
               key={t}
               onClick={() => setEntityType(t)}

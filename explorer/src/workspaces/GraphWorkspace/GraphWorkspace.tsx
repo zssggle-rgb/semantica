@@ -462,7 +462,7 @@ function SemanticColorLegend({ items }: { items: GraphColorLegendItem[] }) {
   if (!items.length) return null;
   return (
     <div className="explore-color-legend" role="group" aria-label={uiText("Node colors")}>
-      <span className="explore-color-legend-label" title="Base semantic colors; selection, zoom, and distance effects can change node appearance.">{uiText("Node colors")}</span>
+      <span className="explore-color-legend-label" title={uiText("Base semantic colors; selection, zoom, and distance effects can change node appearance.")}>{uiText("Node colors")}</span>
       <ul className="explore-color-legend-items">
         {items.map((item) => (
           <li key={item.id} className="explore-color-legend-item" title={uiText("{{v0}}: {{v1}} nodes", { v0: (item.group), v1: (item.count.toLocaleString()) })}>
@@ -1377,7 +1377,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
       nodesTotal: graphSummary.nodeCount,
       edgesLoaded: graphSummary.edgeCount,
       edgesTotal: graphSummary.edgeCount,
-      message: "Settling runtime layout",
+      message: uiText("Settling runtime layout"),
       showGraphBehind: true,
       layoutSource: graphSummary.layoutSource,
       layoutState: "bootstrapping",
@@ -1398,7 +1398,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
   });
 
   const graphLoadErrorMessage = isGraphLoadError
-    ? (graphLoadError instanceof Error ? graphLoadError.message : "Unknown error while loading the graph.")
+    ? (graphLoadError instanceof Error ? graphLoadError.message : uiText("Unknown error while loading the graph."))
     : null;
 
   const handleRetryGraphLoad = useCallback(() => {
@@ -1801,7 +1801,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
       const data = await response.json();
       setSearchResults(data.results || []);
     } catch (searchFetchError) {
-      setSearchError(searchFetchError instanceof Error ? searchFetchError.message : "Search failed");
+      setSearchError(searchFetchError instanceof Error ? searchFetchError.message : uiText("Search failed"));
     }
   }, [searchQuery]);
 
@@ -2058,7 +2058,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
         scores: EMPTY_DISTANCE_RECORD,
         count: 0,
         status: distanceMode === "semantic" ? "unavailable" : "idle",
-        error: distanceMode === "semantic" ? "Select a Full Graph node to load semantic distance." : null,
+        error: distanceMode === "semantic" ? uiText("Select a Full Graph node to load semantic distance.") : null,
       });
       return;
     }
@@ -2105,7 +2105,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
           scores,
           count: Object.keys(scores).length,
           status: Object.keys(scores).length > 0 ? "ready" : "unavailable",
-          error: Object.keys(scores).length > 0 ? null : "No semantic neighbors were returned for this node.",
+          error: Object.keys(scores).length > 0 ? null : uiText("No semantic neighbors were returned for this node."),
         });
       } catch (error) {
         if (cancelled) {
@@ -2116,7 +2116,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
           scores: EMPTY_DISTANCE_RECORD,
           count: 0,
           status: "error",
-          error: error instanceof Error ? error.message : "Semantic distance could not be loaded.",
+          error: error instanceof Error ? error.message : uiText("Semantic distance could not be loaded."),
         });
       }
     };
@@ -2164,7 +2164,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
         heatmapSaturationMode: undefined,
         semanticNeighborCount: 0,
         status: "unavailable",
-        error: "Distance intelligence is available in Full Graph mode.",
+        error: uiText("Distance intelligence is available in Full Graph mode."),
       };
     }
 
@@ -2184,7 +2184,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
         heatmapSaturationMode: undefined,
         semanticNeighborCount: 0,
         status: "unavailable",
-        error: "Select a node to activate distance intelligence.",
+        error: uiText("Select a node to activate distance intelligence."),
       };
     }
 
@@ -2373,7 +2373,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
     if (!selectedNodeId || !graph.hasNode(selectedNodeId)) {
       if (viewMode === "grouped") {
         return displayState.groupedViewAvailable
-          ? "Communities compressed into grouped structure view"
+          ? uiText("Communities compressed into grouped structure view")
           : (groupedViewReasonText(displayState.groupedViewReason) ?? groupedViewReasonText({ code: "communities-undetected" }));
       }
       return null;
@@ -2382,18 +2382,18 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
     const localNeighborCount = graph.neighbors(selectedNodeId).length;
     if (viewMode === "focused") {
       const visibleNeighbors = displayState.selectedVisibleNeighborIds.length || Math.min(localNeighborCount, 16);
-      return `${visibleNeighbors + 1} nodes in focused view`;
+      return uiText("{{v0}} nodes in focused view", { v0: (visibleNeighbors + 1) });
     }
 
     if (viewMode === "grouped") {
-      return "Grouped structure view with direct community drill-in";
+      return uiText("Grouped structure view with direct community drill-in");
     }
 
     if (displayState.selectedCollapsedNeighborIds.length > 0) {
-      return `${displayState.selectedVisibleNeighborIds.length} visible neighbors, ${displayState.selectedCollapsedNeighborIds.length} collapsed`;
+      return uiText("{{v0}} visible neighbors, {{v1}} collapsed", { v0: (displayState.selectedVisibleNeighborIds.length), v1: (displayState.selectedCollapsedNeighborIds.length) });
     }
 
-    return `${localNeighborCount} direct neighbors highlighted`;
+    return uiText("{{v0}} direct neighbors highlighted", { v0: (localNeighborCount) });
   }, [displayState, selectedNodeId, viewMode]);
   const graphSummary = summary as GraphLoadSummary | null;
   const selectedNodeState = useMemo(
@@ -2800,7 +2800,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
         id: "view-grouped",
         label: uiText("Grouped View"),
         title: displayState.groupedViewAvailable
-          ? "Compress dense structure into detected communities"
+          ? uiText("Compress dense structure into detected communities")
           : (groupedViewReasonText(displayState.groupedViewReason)
             ?? groupedViewReasonText({ code: "communities-undetected" })
             ?? undefined),
@@ -2813,7 +2813,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
         id: "view-focused",
         label: uiText("Focus"),
         title: canActivateFocusedMode
-          ? "Inspect the selected node in a focused local graph"
+          ? uiText("Inspect the selected node in a focused local graph")
           : (focusedUnavailableReasonText(focusedSelectionResolution.reason) ?? undefined),
         icon: Focus,
         active: viewMode === "focused",
@@ -2843,7 +2843,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
       id: "zoom-in",
       label: uiText("Zoom In"),
       title: uiText("Zoom in (or scroll up on the canvas)"),
-      ariaLabel: "Zoom in",
+      ariaLabel: uiText("Zoom in"),
       icon: ZoomIn,
       compact: true,
       onClick: () => sceneRef.current?.zoomIn(),
@@ -2852,7 +2852,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
       id: "zoom-out",
       label: uiText("Zoom Out"),
       title: uiText("Zoom out (or scroll down on the canvas)"),
-      ariaLabel: "Zoom out",
+      ariaLabel: uiText("Zoom out"),
       icon: ZoomOut,
       compact: true,
       onClick: () => sceneRef.current?.zoomOut(),
@@ -2861,7 +2861,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
       id: "fit-view",
       label: uiText("Fit"),
       title: uiText("Reset the camera to fit the whole graph"),
-      ariaLabel: "Fit view",
+      ariaLabel: uiText("Fit view"),
       icon: Maximize2,
       compact: true,
       onClick: () => sceneRef.current?.fitView(),
@@ -2871,7 +2871,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
   const layoutToolbarItems = useMemo<GraphToolbarItem[]>(() => [
     {
       id: "layout-toggle",
-      label: isLayoutRunning ? "Pause" : "Run",
+      label: isLayoutRunning ? uiText("Pause") : uiText("Run"),
       title: uiText("Toggle the layout worker"),
       icon: isLayoutRunning ? Pause : Play,
       active: isLayoutRunning,
@@ -2922,7 +2922,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
       id: "reload",
       label: uiText("Reload"),
       title: uiText("Reload the graph data"),
-      ariaLabel: "Reload graph data",
+      ariaLabel: uiText("Reload graph data"),
       icon: RefreshCw,
       compact: true,
       disabled: showLoadingOverlay,
@@ -2940,10 +2940,10 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
     return [
       {
         id: "ego-mode",
-        label: egoModeEnabled ? `Ego (${egoMaxHops}h)` : "Ego Mode",
+        label: egoModeEnabled ? uiText("Ego ({{hops}}h)", { hops: egoMaxHops }) : uiText("Ego Mode"),
         title: egoModeEnabled
-          ? `Egocentric view: ${egoMaxHops} hops depth (click to toggle off)`
-          : "Show depth-of-field fading around the selected node",
+          ? uiText("Egocentric view: {{hops}} hops depth (click to toggle off)", { hops: egoMaxHops })
+          : uiText("Show depth-of-field fading around the selected node"),
         active: egoModeEnabled,
         onClick: () => {
           setEgoModeEnabled((v) => !v);
@@ -2955,8 +2955,8 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
         id: "heatmap",
         label: uiText("Heatmap"),
         title: heatmapEnabled
-          ? "Distance heatmap active (click to toggle off)"
-          : "Color nodes by hop distance from selected node",
+          ? uiText("Distance heatmap active (click to toggle off)")
+          : uiText("Color nodes by hop distance from selected node"),
         active: heatmapEnabled,
         onClick: () => {
           setHeatmapEnabled((v) => !v);
@@ -3063,7 +3063,7 @@ export function GraphWorkspace({ externalFocusNodeId, externalFocusToken, onDirt
     if (rendered == null || rendered >= truth) {
       return truth.toLocaleString();
     }
-    return `${truth.toLocaleString()} (${rendered.toLocaleString()} shown)`;
+    return uiText("{{v0}} ({{v1}} shown)", { v0: (truth.toLocaleString()), v1: (rendered.toLocaleString()) });
   };
   const heatmapDistanceSummary = visibleDistanceCounts
     ? [

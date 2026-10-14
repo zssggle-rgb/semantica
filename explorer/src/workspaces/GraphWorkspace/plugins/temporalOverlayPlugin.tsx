@@ -7,7 +7,7 @@ const TEMPORAL_PANEL_ID = "temporal-panel";
 
 function formatTemporalLabel(value: Date | null) {
   if (!value) {
-    return "No time selected";
+    return uiText("No time selected");
   }
   return `${value.getFullYear()}/${String(value.getMonth() + 1).padStart(2, "0")}`;
 }

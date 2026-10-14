@@ -45,7 +45,7 @@ function normalizeError(failure: unknown): MarkdownEditorError {
   if (failure instanceof MarkdownClientError) return failure;
   return {
     kind: "network",
-    message: "The Markdown service could not be reached. Your draft was kept.",
+    message: uiText("The Markdown service could not be reached. Your draft was kept."),
   };
 }
 

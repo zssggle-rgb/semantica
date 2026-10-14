@@ -191,9 +191,9 @@ export function KGOverviewTab() {
   const totalEdges = stats?.edge_count ?? 0;
 
   const statCards = [
-    { label: uiText("Nodes"),   value: totalNodes.toLocaleString(), color: "var(--ws-accent)",  sub: `${nodeTypeEntries.length} types` },
-    { label: uiText("Edges"),   value: totalEdges.toLocaleString(), color: "var(--ws-green)",   sub: `${edgeTypeEntries.length} rel. types` },
-    { label: uiText("Density"), value: totalNodes > 1 ? ((totalEdges / (totalNodes * (totalNodes - 1))) * 100).toFixed(3) + "%" : "—", color: "var(--ws-purple)", sub: "graph density" },
+    { label: uiText("Nodes"),   value: totalNodes.toLocaleString(), color: "var(--ws-accent)",  sub: uiText("{{count}} types", { count: nodeTypeEntries.length }) },
+    { label: uiText("Edges"),   value: totalEdges.toLocaleString(), color: "var(--ws-green)",   sub: uiText("{{count}} rel. types", { count: edgeTypeEntries.length }) },
+    { label: uiText("Density"), value: totalNodes > 1 ? ((totalEdges / (totalNodes * (totalNodes - 1))) * 100).toFixed(3) + "%" : "—", color: "var(--ws-purple)", sub: uiText("graph density") },
   ];
 
   return (

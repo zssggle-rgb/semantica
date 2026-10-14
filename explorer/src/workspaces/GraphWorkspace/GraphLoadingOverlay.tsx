@@ -180,11 +180,11 @@ const LOADING_OVERLAY_CSS = `
 function formatLayoutSource(source: GraphLoadProgress["layoutSource"]) {
   switch (source) {
     case "provided":
-      return "Persisted layout";
+      return uiText("Persisted layout");
     case "carried":
-      return "Preserved layout";
+      return uiText("Preserved layout");
     case "runtime":
-      return "Runtime layout";
+      return uiText("Runtime layout");
     default:
       return null;
   }
@@ -354,7 +354,7 @@ export function GraphLoadingOverlay({
         <div className="graph-stage-loader-track" style={{ marginBottom: 14 }}>
           {GRAPH_LOAD_STAGE_SEQUENCE.map((phase, index) => {
             const current = activeProgress.stageIndex ?? 1;
-            const state = index + 1 < current ? uiText("done") : index + 1 === current ? uiText("active") : uiText("upcoming");
+            const state = index + 1 < current ? "done" : index + 1 === current ? "active" : "upcoming";
             return (
               <div key={phase} className="graph-stage-loader-step" data-state={state}>
                 {getGraphLoadStageLabel(phase)}

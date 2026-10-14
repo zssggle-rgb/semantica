@@ -113,7 +113,7 @@ export function TimelinePanel({ onTimeChange, minDate, maxDate }: TimelinePanelP
       playheadRef.current = defaultTime;
       nextTimeline.addCustomTime(defaultTime, PLAYHEAD_ID);
       nextTimeline.setCustomTimeTitle(
-        (date: Date) => `${uiText("Current")}: ${moment(date).locale(uiLanguage === "zh-CN" ? "zh-cn" : "en").format("llll")}`,
+        (date: Date) => `${uiText("Current")}: ${new Intl.DateTimeFormat(uiLanguage, { dateStyle: "medium", timeStyle: "short" }).format(date)}`,
         PLAYHEAD_ID,
       );
       nextTimeline.on("timechange", (props: { id: string; time: Date }) => {

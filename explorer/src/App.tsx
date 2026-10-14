@@ -17,6 +17,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { ErrorBoundary } from './ErrorBoundary';
+import { LanguageSwitcher } from './i18n/LanguageSwitcher';
 import { ExploreWorkspaceTabs, type ExploreView } from './ExploreWorkspaceTabs';
 import { fetchAgentMemoryAvailability } from './explorerCapabilities';
 import { hasOntologyUrlState } from './workspaces/OntologyWorkspace/ontologyUrlState';
@@ -2026,6 +2027,7 @@ export default function App() {
               <span className="nav-label">{label}</span>
             </button>
           ))}
+          <LanguageSwitcher />
         </aside>
         {renderWorkspace()}
       </div>

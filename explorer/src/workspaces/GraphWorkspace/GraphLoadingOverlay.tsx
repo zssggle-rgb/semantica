@@ -1,3 +1,4 @@
+import { uiText } from "../../i18n";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { AlertTriangle, RefreshCw } from "lucide-react";
 
@@ -179,11 +180,11 @@ const LOADING_OVERLAY_CSS = `
 function formatLayoutSource(source: GraphLoadProgress["layoutSource"]) {
   switch (source) {
     case "provided":
-      return "Persisted layout";
+      return uiText("Persisted layout");
     case "carried":
-      return "Preserved layout";
+      return uiText("Preserved layout");
     case "runtime":
-      return "Runtime layout";
+      return uiText("Runtime layout");
     default:
       return null;
   }
@@ -237,7 +238,7 @@ export function GraphLoadingOverlay({
   const [displayProgress, setDisplayProgress] = useState<GraphLoadProgress>(
     progress ?? createGraphLoadProgress({
       phase: "bootstrapping",
-      message: "Preparing graph session",
+      message: uiText("Preparing graph session"),
       progressKind: "indeterminate",
     }),
   );
@@ -297,12 +298,8 @@ export function GraphLoadingOverlay({
               <AlertTriangle size={18} strokeWidth={2.2} />
             </div>
             <div style={{ minWidth: 0 }}>
-              <div style={{ color: "#ffffff", fontSize: 20, fontWeight: 700, letterSpacing: "-0.03em", marginBottom: 6 }}>
-                Could not load the graph
-              </div>
-              <div style={{ color: "#8fa8c6", fontSize: 13, lineHeight: 1.5 }}>
-                The Explorer API did not return graph data. Check that the backend is running and reachable, then try again.
-              </div>
+              <div style={{ color: "#ffffff", fontSize: 20, fontWeight: 700, letterSpacing: "-0.03em", marginBottom: 6 }}>{uiText("Could not load the graph")}</div>
+              <div style={{ color: "#8fa8c6", fontSize: 13, lineHeight: 1.5 }}>{uiText("The Explorer API did not return graph data. Check that the backend is running and reachable, then try again.")}</div>
             </div>
           </div>
 
@@ -311,9 +308,7 @@ export function GraphLoadingOverlay({
           {onRetry ? (
             <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
               <button type="button" className="graph-stage-loader-retry" onClick={onRetry}>
-                <RefreshCw size={14} strokeWidth={2.2} aria-hidden />
-                Retry
-              </button>
+                <RefreshCw size={14} strokeWidth={2.2} aria-hidden />{uiText("Retry")}</button>
             </div>
           ) : null}
         </div>
@@ -351,8 +346,7 @@ export function GraphLoadingOverlay({
           </div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
             <div className="graph-stage-loader-beacon" aria-hidden="true" />
-            <div style={{ color: "#d7e9fb", fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-              Stage {activeProgress.stageIndex ?? 1}/{activeProgress.stageCount ?? GRAPH_LOAD_STAGE_SEQUENCE.length}
+            <div style={{ color: "#d7e9fb", fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>{uiText("Stage")}{activeProgress.stageIndex ?? 1}/{activeProgress.stageCount ?? GRAPH_LOAD_STAGE_SEQUENCE.length}
             </div>
           </div>
         </div>
@@ -372,13 +366,13 @@ export function GraphLoadingOverlay({
         <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "baseline", marginBottom: 8 }}>
           <div style={{ color: "#dce9f6", fontSize: 12, fontWeight: 600 }}>
             {activeProgress.progressKind === "determinate" && activeProgress.total
-              ? `${(activeProgress.loaded ?? 0).toLocaleString()} / ${activeProgress.total.toLocaleString()} in current stage`
-              : "Working through this stage"}
+              ? uiText("{{v0}} / {{v1}} in current stage", { v0: ((activeProgress.loaded ?? 0).toLocaleString()), v1: (activeProgress.total.toLocaleString()) })
+              : uiText("Working through this stage")}
           </div>
           <div style={{ color: "#90a8c5", fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>
             {activeProgress.progressKind === "determinate" && determinateRatio !== null
               ? `${Math.round(determinateRatio * 100)}%`
-              : "Live"}
+              : uiText("Live")}
           </div>
         </div>
 
@@ -391,12 +385,10 @@ export function GraphLoadingOverlay({
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 14 }}>
           <span style={loadingMetricStyle}>
             {activeProgress.nodesLoaded.toLocaleString()}
-            {activeProgress.nodesTotal ? ` / ${activeProgress.nodesTotal.toLocaleString()}` : ""} nodes
-          </span>
+            {activeProgress.nodesTotal ? ` / ${activeProgress.nodesTotal.toLocaleString()}` : ""}{uiText("nodes")}</span>
           <span style={loadingMetricStyle}>
             {activeProgress.edgesLoaded.toLocaleString()}
-            {activeProgress.edgesTotal ? ` / ${activeProgress.edgesTotal.toLocaleString()}` : ""} relationships
-          </span>
+            {activeProgress.edgesTotal ? ` / ${activeProgress.edgesTotal.toLocaleString()}` : ""}{uiText("relationships")}</span>
           {layoutSource ? (
             <span style={{ ...loadingMetricStyle, color: "#a9ddff", borderColor: withAlpha(GRAPH_THEME.palette.accent.hovered, 0.22) }}>
               {layoutSource}

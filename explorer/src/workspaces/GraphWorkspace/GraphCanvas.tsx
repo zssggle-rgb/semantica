@@ -1,3 +1,4 @@
+import { uiText } from "../../i18n";
 import { useEffect, useMemo, useRef, useCallback, forwardRef, useImperativeHandle, useState, type ReactNode } from "react";
 import Sigma from "sigma";
 import FA2Layout from "graphology-layout-forceatlas2/worker";
@@ -565,142 +566,142 @@ function buildEffectAvailability(
   const regionsTierReady = zoomTierAtLeast(interactionState.zoomTier, GRAPH_THEME.effects.semanticRegions.minZoomTier);
   const contoursTierReady = zoomTierAtLeast(interactionState.zoomTier, GRAPH_THEME.effects.contours.minZoomTier);
   const hasPrimaryNode = Boolean(interactionState.hoveredNodeId || interactionState.selectedNodeId);
-  const layoutReason = "Layout is still settling";
+  const layoutReason = uiText("Layout is still settling");
 
   const pathPulse = !effectsState.pathPulseEnabled
-    ? { enabled: false, available: false, reason: "Disabled by toggle" }
+    ? { enabled: false, available: false, reason: uiText("Disabled by toggle") }
     : isLayoutRunning
       ? { enabled: true, available: false, reason: layoutReason }
     : !hasActivePath
-      ? { enabled: true, available: false, reason: "No active path" }
+      ? { enabled: true, available: false, reason: uiText("No active path") }
       : !pulseTierReady
         ? {
             enabled: true,
             available: false,
-            reason: "Disabled by zoom tier",
-            detail: `Requires ${GRAPH_THEME.effects.pathPulse.minZoomTier}`,
+            reason: uiText("Disabled by zoom tier"),
+            detail: uiText("Requires {{v0}}", { v0: (GRAPH_THEME.effects.pathPulse.minZoomTier) }),
           }
         : visiblePathSegments === 0
-          ? { enabled: true, available: false, reason: "Path is off-screen" }
+          ? { enabled: true, available: false, reason: uiText("Path is off-screen") }
           : visiblePathSegments > GRAPH_THEME.effects.pathPulse.maxSegments
             ? {
                 enabled: true,
                 available: false,
-                reason: "Disabled by path size cap",
-                detail: `${visiblePathSegments} visible segments`,
+                reason: uiText("Disabled by path size cap"),
+                detail: uiText("{{v0}} visible segments", { v0: (visiblePathSegments) }),
                 visibleSegments: visiblePathSegments,
                 segmentCap: GRAPH_THEME.effects.pathPulse.maxSegments,
               }
             : {
                 enabled: true,
                 available: true,
-                reason: "Ready",
+                reason: uiText("Ready"),
                 visibleSegments: visiblePathSegments,
                 segmentCap: GRAPH_THEME.effects.pathPulse.maxSegments,
               };
 
   const pathFlow = !effectsState.pathFlowEnabled
-    ? { enabled: false, available: false, reason: "Disabled by toggle" }
+    ? { enabled: false, available: false, reason: uiText("Disabled by toggle") }
     : isLayoutRunning
       ? { enabled: true, available: false, reason: layoutReason }
     : !hasActivePath
-      ? { enabled: true, available: false, reason: "No active path" }
+      ? { enabled: true, available: false, reason: uiText("No active path") }
       : !flowTierReady
         ? {
             enabled: true,
             available: false,
-            reason: "Disabled by zoom tier",
-            detail: `Requires ${GRAPH_THEME.effects.pathFlow.minZoomTier}`,
+            reason: uiText("Disabled by zoom tier"),
+            detail: uiText("Requires {{v0}}", { v0: (GRAPH_THEME.effects.pathFlow.minZoomTier) }),
           }
         : visiblePathSegments === 0
-          ? { enabled: true, available: false, reason: "Path is off-screen" }
+          ? { enabled: true, available: false, reason: uiText("Path is off-screen") }
           : visiblePathSegments > GRAPH_THEME.effects.pathFlow.maxSegments
             ? {
                 enabled: true,
                 available: false,
-                reason: "Disabled by path size cap",
-                detail: `${visiblePathSegments} visible segments`,
+                reason: uiText("Disabled by path size cap"),
+                detail: uiText("{{v0}} visible segments", { v0: (visiblePathSegments) }),
                 visibleSegments: visiblePathSegments,
                 segmentCap: GRAPH_THEME.effects.pathFlow.maxSegments,
               }
             : {
                 enabled: true,
                 available: true,
-                reason: "Ready",
+                reason: uiText("Ready"),
                 visibleSegments: visiblePathSegments,
                 segmentCap: GRAPH_THEME.effects.pathFlow.maxSegments,
               };
 
   const lens = !effectsState.lensEnabled
-    ? { enabled: false, available: false, reason: "Disabled by toggle" }
+    ? { enabled: false, available: false, reason: uiText("Disabled by toggle") }
     : isLayoutRunning
       ? { enabled: true, available: false, reason: layoutReason }
     : !hasPrimaryNode
-      ? { enabled: true, available: false, reason: "No focal node" }
+      ? { enabled: true, available: false, reason: uiText("No focal node") }
       : !lensTierReady
         ? {
             enabled: true,
             available: false,
-            reason: "Disabled by zoom tier",
-            detail: `Requires ${GRAPH_THEME.effects.lens.minZoomTier}`,
+            reason: uiText("Disabled by zoom tier"),
+            detail: uiText("Requires {{v0}}", { v0: (GRAPH_THEME.effects.lens.minZoomTier) }),
           }
-        : { enabled: true, available: true, reason: "Ready" };
+        : { enabled: true, available: true, reason: uiText("Ready") };
 
   const temporalEmphasis = !effectsState.temporalEmphasisEnabled
-    ? { enabled: false, available: false, reason: "Disabled by toggle" }
+    ? { enabled: false, available: false, reason: uiText("Disabled by toggle") }
     : isLayoutRunning
       ? { enabled: true, available: false, reason: layoutReason }
     : !temporalState?.currentTime
-      ? { enabled: true, available: false, reason: "No temporal focus time" }
+      ? { enabled: true, available: false, reason: uiText("No temporal focus time") }
       : !temporalTierReady
         ? {
             enabled: true,
             available: false,
-            reason: "Disabled by zoom tier",
-            detail: `Requires ${GRAPH_THEME.effects.temporalEmphasis.minZoomTier}`,
+            reason: uiText("Disabled by zoom tier"),
+            detail: uiText("Requires {{v0}}", { v0: (GRAPH_THEME.effects.temporalEmphasis.minZoomTier) }),
           }
-        : { enabled: true, available: true, reason: "Ready" };
+        : { enabled: true, available: true, reason: uiText("Ready") };
 
   const semanticRegions = !effectsState.semanticRegionsEnabled
-    ? { enabled: false, available: false, reason: "Disabled by toggle" }
+    ? { enabled: false, available: false, reason: uiText("Disabled by toggle") }
     : isLayoutRunning
       ? { enabled: true, available: false, reason: layoutReason }
     : !regionsTierReady
       ? {
           enabled: true,
           available: false,
-          reason: "Disabled by zoom tier",
-          detail: `Requires ${GRAPH_THEME.effects.semanticRegions.minZoomTier}`,
+          reason: uiText("Disabled by zoom tier"),
+          detail: uiText("Requires {{v0}}", { v0: (GRAPH_THEME.effects.semanticRegions.minZoomTier) }),
         }
       : !analytics?.semanticRegions.ready
         ? {
             enabled: true,
             available: false,
-            reason: analytics?.semanticRegions.reason ?? "Waiting for semantic region summaries",
+            reason: analytics?.semanticRegions.reason ?? uiText("Waiting for semantic region summaries"),
           }
         : { enabled: true, available: true, reason: analytics.semanticRegions.reason };
 
   const contours = !effectsState.contoursEnabled
-    ? { enabled: false, available: false, reason: "Disabled by toggle" }
+    ? { enabled: false, available: false, reason: uiText("Disabled by toggle") }
     : isLayoutRunning
       ? { enabled: true, available: false, reason: layoutReason }
     : !contoursTierReady
       ? {
           enabled: true,
           available: false,
-          reason: "Disabled by zoom tier",
-          detail: `Requires ${GRAPH_THEME.effects.contours.minZoomTier}`,
+          reason: uiText("Disabled by zoom tier"),
+          detail: uiText("Requires {{v0}}", { v0: (GRAPH_THEME.effects.contours.minZoomTier) }),
         }
       : !analytics?.centrality.ready
         ? {
             enabled: true,
             available: false,
-            reason: analytics?.centrality.reason ?? "Waiting for centrality ranking",
+            reason: analytics?.centrality.reason ?? uiText("Waiting for centrality ranking"),
           }
         : { enabled: true, available: true, reason: analytics.centrality.reason };
 
   const pathfinding = !effectsState.pathfindingEnabled
-    ? { enabled: false, available: false, reason: "Disabled by toggle" }
+    ? { enabled: false, available: false, reason: uiText("Disabled by toggle") }
     : !analytics?.directedPath.ready
       ? {
           enabled: true,
@@ -711,51 +712,51 @@ function buildEffectAvailability(
           enabled: true,
           available: true,
           reason: analytics.directedPath.verifiedAgainstActivePath
-            ? "Ready · local path matches traced path"
-            : "Ready · local directed path differs from traced path",
+            ? uiText("Ready · local path matches traced path")
+            : uiText("Ready · local directed path differs from traced path"),
         };
 
   const communities = !effectsState.communitiesEnabled
-    ? { enabled: false, available: false, reason: "Disabled by toggle" }
+    ? { enabled: false, available: false, reason: uiText("Disabled by toggle") }
     : !analytics?.communities.ready
       ? {
           enabled: true,
           available: false,
-          reason: analytics?.communities.reason ?? "Waiting for community summaries",
+          reason: analytics?.communities.reason ?? uiText("Waiting for community summaries"),
         }
       : {
           enabled: true,
           available: true,
           reason: analytics.communities.modularity !== null
-            ? `Ready · modularity ${analytics.communities.modularity.toFixed(3)}`
+            ? uiText("Ready · modularity {{v0}}", { v0: (analytics.communities.modularity.toFixed(3)) })
             : analytics.communities.reason,
         };
 
   const centrality = !effectsState.centralityEnabled
-    ? { enabled: false, available: false, reason: "Disabled by toggle" }
+    ? { enabled: false, available: false, reason: uiText("Disabled by toggle") }
     : !analytics?.centrality.ready
       ? {
           enabled: true,
           available: false,
-          reason: analytics?.centrality.reason ?? "Waiting for centrality ranking",
+          reason: analytics?.centrality.reason ?? uiText("Waiting for centrality ranking"),
         }
       : { enabled: true, available: true, reason: analytics.centrality.reason };
 
   const legend = effectsState.legendEnabled
-    ? { enabled: true, available: true, reason: "Panel enabled" }
-    : { enabled: false, available: false, reason: "Disabled by toggle" };
+    ? { enabled: true, available: true, reason: uiText("Panel enabled") }
+    : { enabled: false, available: false, reason: uiText("Disabled by toggle") };
 
   // #1009: edge labels are immediately available once the graph is loaded —
   // they have no async analytics or zoom-tier dependency.
   const edgeLabels = effectsState.edgeLabelsEnabled
-    ? { enabled: true, available: true, reason: "Ready" }
-    : { enabled: false, available: false, reason: "Disabled by toggle" };
+    ? { enabled: true, available: true, reason: uiText("Ready") }
+    : { enabled: false, available: false, reason: uiText("Disabled by toggle") };
 
   const diagnostics = !GRAPH_THEME.effects.diagnostics.enabledInDev
-    ? { enabled: false, available: false, reason: "Disabled in production" }
+    ? { enabled: false, available: false, reason: uiText("Disabled in production") }
     : effectsState.diagnosticsEnabled
-      ? { enabled: true, available: true, reason: "Ready" }
-      : { enabled: false, available: false, reason: "Disabled by toggle" };
+      ? { enabled: true, available: true, reason: uiText("Ready") }
+      : { enabled: false, available: false, reason: uiText("Disabled by toggle") };
 
   return {
     pathPulse,
@@ -2663,9 +2664,7 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle, GraphCanvasProps>(
               fontSize: 12,
               letterSpacing: "0.01em",
             }}
-          >
-            Fit View
-          </button>
+          >{uiText("Fit View")}</button>
         ) : null}
       </div>
     );

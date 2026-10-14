@@ -1,3 +1,4 @@
+import { uiText } from "./i18n";
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { AlertCircle } from 'lucide-react';
 
@@ -72,13 +73,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           }}
         >
           <AlertCircle size={32} style={{ marginBottom: 4, opacity: 0.8 }} />
-          <div style={{ fontWeight: 500, fontSize: '15px' }}>
-            Something went wrong in this view.
-          </div>
+          <div style={{ fontWeight: 500, fontSize: '15px' }}>{uiText("Something went wrong in this view.")}</div>
           <div style={{ fontSize: '13px', opacity: 0.7, maxWidth: 450, textAlign: 'center', marginBottom: 8, lineHeight: 1.5 }}>
             {maxRetriesReached 
-              ? "This view continues to encounter a critical error. Please switch to another workspace or reload the page to restore functionality."
-              : "An unexpected problem occurred while rendering this workspace. Your data is safe, but this view cannot be displayed."}
+              ? uiText("This view continues to encounter a critical error. Please switch to another workspace or reload the page to restore functionality.")
+              : uiText("An unexpected problem occurred while rendering this workspace. Your data is safe, but this view cannot be displayed.")}
           </div>
           {!maxRetriesReached ? (
             <button 
@@ -88,9 +87,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 color: 'var(--ws-red)'
               }}
               onClick={this.resetErrorBoundary}
-            >
-              Try Again
-            </button>
+            >{uiText("Try Again")}</button>
           ) : (
             <button 
               className="ws-btn ws-btn--ghost" 
@@ -99,9 +96,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 color: 'var(--ws-text)'
               }}
               onClick={() => window.location.reload()}
-            >
-              Reload Application
-            </button>
+            >{uiText("Reload Application")}</button>
           )}
         </div>
       );

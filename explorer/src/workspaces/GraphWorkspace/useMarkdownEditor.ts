@@ -1,3 +1,4 @@
+import { uiText } from "../../i18n";
 import {
   useCallback,
   useEffect,
@@ -44,7 +45,7 @@ function normalizeError(failure: unknown): MarkdownEditorError {
   if (failure instanceof MarkdownClientError) return failure;
   return {
     kind: "network",
-    message: "The Markdown service could not be reached. Your draft was kept.",
+    message: uiText("The Markdown service could not be reached. Your draft was kept."),
   };
 }
 
@@ -148,7 +149,7 @@ export function useMarkdownEditor({
     if (!resource || saving) return;
     if (
       dirty
-      && !window.confirm("Discard this draft and reload the latest applied version?")
+      && !window.confirm(uiText("Discard this draft and reload the latest applied version?"))
     ) return;
     await beginEdit();
   }, [beginEdit, dirty, resource, saving]);

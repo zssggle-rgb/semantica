@@ -1,3 +1,4 @@
+import { uiText } from "../i18n";
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { Brain, RefreshCw } from "lucide-react";
 
@@ -119,7 +120,7 @@ export function MemoryWorkspace({ onDirtyChange }: MemoryWorkspaceProps = {}) {
         setSelectedBody(document.body);
       } catch (failure) {
         if (isCurrent()) {
-          setError(failure instanceof Error ? failure.message : "Memories could not be loaded.");
+          setError(failure instanceof Error ? failure.message : uiText("Memories could not be loaded."));
         }
       } finally {
         if (isCurrent()) setLoading(false);
@@ -135,7 +136,7 @@ export function MemoryWorkspace({ onDirtyChange }: MemoryWorkspaceProps = {}) {
 
   const selectMemory = async (memoryId: string) => {
     if (memoryId === selectedId) return;
-    if (dirty && !window.confirm("Discard the unapplied Markdown draft and open another memory?")) return;
+    if (dirty && !window.confirm(uiText("Discard the unapplied Markdown draft and open another memory?"))) return;
     const selectionGeneration = ++selectionGenerationRef.current;
     // Do NOT call handleDirtyChange(false) here: the editor's own onDirtyChange
     // callback fires automatically when MarkdownContentViewer re-renders with
@@ -152,7 +153,7 @@ export function MemoryWorkspace({ onDirtyChange }: MemoryWorkspaceProps = {}) {
       setSelectedBody(document.body);
     } catch (failure) {
       if (selectionGeneration === selectionGenerationRef.current) {
-        setError(failure instanceof Error ? failure.message : "The memory could not be loaded.");
+        setError(failure instanceof Error ? failure.message : uiText("The memory could not be loaded."));
       }
     } finally {
       if (selectionGeneration === selectionGenerationRef.current) {
@@ -180,7 +181,7 @@ export function MemoryWorkspace({ onDirtyChange }: MemoryWorkspaceProps = {}) {
       setNextOffset(payload.skip + payload.items.length);
     } catch (failure) {
       if (listGeneration === listGenerationRef.current) {
-        setError(failure instanceof Error ? failure.message : "More memories could not be loaded.");
+        setError(failure instanceof Error ? failure.message : uiText("More memories could not be loaded."));
       }
     } finally {
       if (listGeneration === listGenerationRef.current) {
@@ -199,7 +200,7 @@ export function MemoryWorkspace({ onDirtyChange }: MemoryWorkspaceProps = {}) {
       setNextOffset(payload.nextOffset);
     } catch {
       if (listGeneration === listGenerationRef.current) {
-        setError("Memory was applied, but its summary could not be refreshed.");
+        setError(uiText("Memory was applied, but its summary could not be refreshed."));
       }
     } finally {
       if (listGeneration === listGenerationRef.current) {
@@ -221,18 +222,18 @@ export function MemoryWorkspace({ onDirtyChange }: MemoryWorkspaceProps = {}) {
 
   return (
     <div style={workspaceStyle}>
-      <aside style={listPanelStyle} aria-label="Agent memories">
+      <aside style={listPanelStyle} aria-label={uiText("Agent memories")}>
         <div style={listHeaderStyle}>
           <div>
-            <div style={listTitleStyle}>AgentMemory</div>
-            <div style={listCountStyle}>{items.length} of {total} loaded</div>
+            <div style={listTitleStyle}>{uiText("AgentMemory")}</div>
+            <div style={listCountStyle}>{items.length}{uiText("of")}{total}{uiText("loaded")}</div>
           </div>
           <button
             type="button"
-            aria-label="Refresh memories"
+            aria-label={uiText("Refresh memories")}
             onClick={() => setReloadToken((value) => value + 1)}
             disabled={loading || loadingMore || dirty}
-            title={dirty ? "Apply or cancel the current draft before refreshing" : "Refresh memories"}
+            title={dirty ? uiText("Apply or cancel the current draft before refreshing") : uiText("Refresh memories")}
             style={{ ...iconButtonStyle, opacity: loading || loadingMore || dirty ? 0.55 : 1 }}
           >
             <RefreshCw size={14} aria-hidden="true" />
@@ -252,27 +253,25 @@ export function MemoryWorkspace({ onDirtyChange }: MemoryWorkspaceProps = {}) {
             >
               <span style={memoryTypeStyle}>{item.type}</span>
               <span style={memoryIdStyle}>{item.id}</span>
-              <span style={memoryExcerptStyle}>{item.excerpt || "Empty memory"}</span>
+              <span style={memoryExcerptStyle}>{item.excerpt || uiText("Empty memory")}</span>
             </button>
           ))}
           {nextOffset < total ? (
             <button
               type="button"
-              aria-label="Load more memories"
+              aria-label={uiText("Load more memories")}
               onClick={() => void loadMoreMemories()}
               disabled={loading || loadingMore}
               style={{ ...retryButtonStyle, opacity: loading || loadingMore ? 0.55 : 1 }}
             >
-              {loadingMore ? "Loading…" : "Load more"}
+              {loadingMore ? uiText("Loading…") : uiText("Load more")}
             </button>
           ) : null}
           {!loading && items.length === 0 ? (
             <div style={emptyStyle}>
               <Brain size={22} aria-hidden="true" />
-              <span>No AgentMemory items are available.</span>
-              <button type="button" onClick={() => setReloadToken((value) => value + 1)} style={retryButtonStyle}>
-                Refresh
-              </button>
+              <span>{uiText("No AgentMemory items are available.")}</span>
+              <button type="button" onClick={() => setReloadToken((value) => value + 1)} style={retryButtonStyle}>{uiText("Refresh")}</button>
             </div>
           ) : null}
         </div>
@@ -281,11 +280,11 @@ export function MemoryWorkspace({ onDirtyChange }: MemoryWorkspaceProps = {}) {
       <main style={editorPanelStyle}>
         {error ? <div role="alert" style={alertStyle}>{error}</div> : null}
         {loading ? (
-          <div role="status" style={emptyStyle}>Loading memories…</div>
+          <div role="status" style={emptyStyle}>{uiText("Loading memories…")}</div>
         ) : selectedId ? (
           <>
             <div style={selectionHeaderStyle}>
-              <span style={selectionLabelStyle}>Selected memory</span>
+              <span style={selectionLabelStyle}>{uiText("Selected memory")}</span>
               <strong style={selectionIdStyle}>{selectedId}</strong>
             </div>
             <MarkdownContentViewer

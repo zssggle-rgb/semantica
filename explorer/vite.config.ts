@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import { cpSync, createReadStream, existsSync } from 'node:fs'
 
 const apiTarget = process.env.VITE_EXPLORER_API_TARGET ?? 'http://127.0.0.1:8000'
 const wsTarget = process.env.VITE_EXPLORER_WS_TARGET ?? apiTarget.replace(/^http/, 'ws')
@@ -13,6 +14,29 @@ export default defineConfig({
         plugins: ['babel-plugin-react-compiler'],
       },
     }),
+    {
+      name: 'bundled-monaco-resources',
+      configureServer(server) {
+        const resourceRoot = path.resolve(__dirname, 'node_modules/monaco-editor/min/vs')
+        server.middlewares.use('/assets/monaco/vs', (request, response, next) => {
+          const resourcePath = path.resolve(resourceRoot, `.${new URL(request.url ?? '/', 'http://localhost').pathname}`)
+          if (!resourcePath.startsWith(`${resourceRoot}${path.sep}`) || !existsSync(resourcePath)) {
+            next()
+            return
+          }
+          const extension = path.extname(resourcePath)
+          response.setHeader('Content-Type', extension === '.js' ? 'text/javascript' : extension === '.css' ? 'text/css' : 'application/octet-stream')
+          createReadStream(resourcePath).on('error', next).pipe(response)
+        })
+      },
+      closeBundle() {
+        cpSync(
+          path.resolve(__dirname, 'node_modules/monaco-editor/min/vs'),
+          path.resolve(__dirname, '../semantica/static/assets/monaco/vs'),
+          { recursive: true },
+        )
+      },
+    },
   ],
  
   base: '/',

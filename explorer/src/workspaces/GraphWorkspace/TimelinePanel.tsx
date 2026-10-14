@@ -1,3 +1,7 @@
+import { uiText } from "../../i18n";
+import { uiLanguage } from "../../i18n";
+import moment from "moment";
+import "moment/locale/zh-cn";
 ﻿import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { DataSet } from "vis-data";
 import { Timeline } from "vis-timeline";
@@ -79,7 +83,13 @@ export function TimelinePanel({ onTimeChange, minDate, maxDate }: TimelinePanelP
     const timeline = timelineRef.current;
     if (!timeline) {
       const items = new DataSet([]);
+      moment.locale(uiLanguage === "zh-CN" ? "zh-cn" : "en");
       const options: TimelineOptions = {
+        moment,
+        locale: uiLanguage === "zh-CN" ? "zh-cn" : "en",
+        locales: {
+          "zh-cn": { current: "当前", time: "时间", deleteSelected: "删除所选项" },
+        },
         height: "100%",
         min: minBound,
         max: maxBound,
@@ -102,6 +112,10 @@ export function TimelinePanel({ onTimeChange, minDate, maxDate }: TimelinePanelP
       timelineRef.current = nextTimeline;
       playheadRef.current = defaultTime;
       nextTimeline.addCustomTime(defaultTime, PLAYHEAD_ID);
+      nextTimeline.setCustomTimeTitle(
+        (date: Date) => `${uiText("Current")}: ${new Intl.DateTimeFormat(uiLanguage, { dateStyle: "medium", timeStyle: "short" }).format(date)}`,
+        PLAYHEAD_ID,
+      );
       nextTimeline.on("timechange", (props: { id: string; time: Date }) => {
         if (props.id !== PLAYHEAD_ID) return;
         playheadRef.current = props.time;
@@ -167,7 +181,7 @@ export function TimelinePanel({ onTimeChange, minDate, maxDate }: TimelinePanelP
         <button
           id="temporal-play-btn"
           onClick={togglePlay}
-          title={isPlaying ? "Pause Evolution" : "Play Evolution"}
+          title={isPlaying ? uiText("Pause Evolution") : uiText("Play Evolution")}
           style={{ width: 34, height: 34, borderRadius: "50%", border: `1.5px solid ${isPlaying ? GRAPH_THEME.ui.control.activeBorder : GRAPH_THEME.ui.control.defaultBorder}`, background: isPlaying ? GRAPH_THEME.ui.timeline.playheadSoft : GRAPH_THEME.ui.control.defaultBg, color: GRAPH_THEME.ui.timeline.playhead, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s", boxShadow: isPlaying ? "0 0 10px rgba(98, 226, 205, 0.32)" : "none" }}
         >
           {isPlaying ? (
@@ -181,8 +195,7 @@ export function TimelinePanel({ onTimeChange, minDate, maxDate }: TimelinePanelP
         </span>
       </div>
 
-      <div style={{ position: "absolute", top: 5, left: 100, fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", color: GRAPH_THEME.ui.text.subtle, textTransform: "uppercase", pointerEvents: "none", zIndex: 2 }}>
-        Temporal Scrubber · {minBound.getFullYear()}-{maxBound.getFullYear()}
+      <div style={{ position: "absolute", top: 5, left: 100, fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", color: GRAPH_THEME.ui.text.subtle, textTransform: "uppercase", pointerEvents: "none", zIndex: 2 }}>{uiText("Temporal Scrubber ·")}{minBound.getFullYear()}-{maxBound.getFullYear()}
       </div>
 
       <div className="sem-timeline-wrap" style={{ flex: 1, overflow: "hidden", position: "relative" }}>

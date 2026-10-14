@@ -1,3 +1,4 @@
+import { uiText } from "../../i18n";
 import { useCallback, useEffect, useState } from "react";
 import {
   Layers,
@@ -57,12 +58,12 @@ export function VersionsTab() {
       if (response.ok) {
         const data = await response.json();
         setVersions(data);
-        if (response.status === 207) setError(data.message || "Warning: Partial success loading versions.");
+        if (response.status === 207) setError(data.message || uiText("Warning: Partial success loading versions."));
       } else {
-        setError(`Failed to load versions (${response.status})`);
+        setError(uiText("Failed to load versions ({{v0}})", { v0: (response.status) }));
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load versions.");
+      setError(err instanceof Error ? err.message : uiText("Failed to load versions."));
     }
   }, [ontologyUri]);
 
@@ -73,12 +74,12 @@ export function VersionsTab() {
       if (response.ok) {
         const data = await response.json();
         setProposals(data);
-        if (response.status === 207) setError(data.message || "Warning: Partial success loading proposals.");
+        if (response.status === 207) setError(data.message || uiText("Warning: Partial success loading proposals."));
       } else {
-        setError(`Failed to load proposals (${response.status})`);
+        setError(uiText("Failed to load proposals ({{v0}})", { v0: (response.status) }));
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load proposals.");
+      setError(err instanceof Error ? err.message : uiText("Failed to load proposals."));
     }
   }, []);
 
@@ -92,13 +93,13 @@ export function VersionsTab() {
           const propData = await propRes.json();
           if (!ignore) {
             setProposals(propData);
-            if (propRes.status === 207) setError(propData.message || "Warning: Partial success loading proposals.");
+            if (propRes.status === 207) setError(propData.message || uiText("Warning: Partial success loading proposals."));
           }
         } else if (!ignore) {
-          setError(`Failed to load proposals (${propRes.status})`);
+          setError(uiText("Failed to load proposals ({{v0}})", { v0: (propRes.status) }));
         }
       } catch (err) {
-        if (!ignore) setError(err instanceof Error ? err.message : "Failed to load proposals.");
+        if (!ignore) setError(err instanceof Error ? err.message : uiText("Failed to load proposals."));
       }
 
       if (!ontologyUri) return;
@@ -108,13 +109,13 @@ export function VersionsTab() {
           const verData = await verRes.json();
           if (!ignore) {
             setVersions(verData);
-            if (verRes.status === 207) setError(verData.message || "Warning: Partial success loading versions.");
+            if (verRes.status === 207) setError(verData.message || uiText("Warning: Partial success loading versions."));
           }
         } else if (!ignore) {
-          setError((prev) => prev || `Failed to load versions (${verRes.status})`);
+          setError((prev) => prev || uiText("Failed to load versions ({{v0}})", { v0: (verRes.status) }));
         }
       } catch (err) {
-        if (!ignore) setError((prev) => prev || (err instanceof Error ? err.message : "Failed to load versions."));
+        if (!ignore) setError((prev) => prev || (err instanceof Error ? err.message : uiText("Failed to load versions.")));
       }
     }
     void fetchInitial();
@@ -130,16 +131,16 @@ export function VersionsTab() {
       if (response.ok) {
         if (response.status === 207) {
           const data = await response.json().catch(() => ({}));
-          setError(data.message || "Warning: Partial success approving proposal.");
+          setError(data.message || uiText("Warning: Partial success approving proposal."));
         } else {
-          alert("Proposal approved");
+          alert(uiText("Proposal approved"));
         }
         loadProposals();
       } else {
-        setError(`Failed to approve proposal (${response.status})`);
+        setError(uiText("Failed to approve proposal ({{v0}})", { v0: (response.status) }));
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to approve proposal.");
+      setError(err instanceof Error ? err.message : uiText("Failed to approve proposal."));
     }
   }, [loadProposals]);
 
@@ -152,16 +153,16 @@ export function VersionsTab() {
       if (response.ok) {
         if (response.status === 207) {
           const data = await response.json().catch(() => ({}));
-          setError(data.message || "Warning: Partial success rejecting proposal.");
+          setError(data.message || uiText("Warning: Partial success rejecting proposal."));
         } else {
-          alert("Proposal rejected");
+          alert(uiText("Proposal rejected"));
         }
         loadProposals();
       } else {
-        setError(`Failed to reject proposal (${response.status})`);
+        setError(uiText("Failed to reject proposal ({{v0}})", { v0: (response.status) }));
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to reject proposal.");
+      setError(err instanceof Error ? err.message : uiText("Failed to reject proposal."));
     }
   }, [loadProposals]);
 
@@ -174,17 +175,17 @@ export function VersionsTab() {
       if (response.ok) {
         if (response.status === 207) {
           const data = await response.json().catch(() => ({}));
-          setError(data.message || "Warning: Partial success publishing proposal.");
+          setError(data.message || uiText("Warning: Partial success publishing proposal."));
         } else {
-          alert("Proposal published");
+          alert(uiText("Proposal published"));
         }
         loadProposals();
         loadVersions();
       } else {
-        setError(`Failed to publish proposal (${response.status})`);
+        setError(uiText("Failed to publish proposal ({{v0}})", { v0: (response.status) }));
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to publish proposal.");
+      setError(err instanceof Error ? err.message : uiText("Failed to publish proposal."));
     }
   }, [loadProposals, loadVersions]);
 
@@ -203,13 +204,13 @@ export function VersionsTab() {
       });
       if (response.ok) {
         const data = await response.json();
-        if (response.status === 207) setError(data.message || "Warning: Partial success comparing versions.");
+        if (response.status === 207) setError(data.message || uiText("Warning: Partial success comparing versions."));
         setCompareResult(data);
       } else {
-        setError(`Failed to compare versions (${response.status})`);
+        setError(uiText("Failed to compare versions ({{v0}})", { v0: (response.status) }));
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to compare versions.");
+      setError(err instanceof Error ? err.message : uiText("Failed to compare versions."));
     } finally {
       setIsLoading(false);
     }
@@ -337,10 +338,10 @@ export function VersionsTab() {
   return (
     <div style={containerStyle}>
       <div style={headerStyle}>
-        <h1 style={titleStyle}>Versions & Change Proposals</h1>
+        <h1 style={titleStyle}>{uiText("Versions & Change Proposals")}</h1>
         <input
           type="text"
-          placeholder="Ontology URI"
+          placeholder={uiText("Ontology URI")}
           value={ontologyUri}
           onChange={(e) => setOntologyUri(e.target.value)}
           style={{ ...inputStyle, width: "300px", marginBottom: 0 }}
@@ -351,12 +352,10 @@ export function VersionsTab() {
 
       <div style={sectionStyle}>
         <h2 style={sectionTitleStyle}>
-          <Layers size={16} />
-          Version History
-        </h2>
+          <Layers size={16} />{uiText("Version History")}</h2>
         <div style={listStyle}>
           {versions.length === 0 ? (
-            <div style={{ color: "#8fa8c6", fontSize: "13px" }}>No versions found</div>
+            <div style={{ color: "#8fa8c6", fontSize: "13px" }}>{uiText("No versions found")}</div>
           ) : (
             versions.map((version) => (
               <div key={version.version_id} style={itemStyle}>
@@ -376,9 +375,7 @@ export function VersionsTab() {
                     setShowCompareModal(true);
                   }}
                 >
-                  <ArrowRight size={12} />
-                  Compare
-                </button>
+                  <ArrowRight size={12} />{uiText("Compare")}</button>
               </div>
             ))
           )}
@@ -387,12 +384,10 @@ export function VersionsTab() {
 
       <div style={sectionStyle}>
         <h2 style={sectionTitleStyle}>
-          <GitMerge size={16} />
-          Change Proposals
-        </h2>
+          <GitMerge size={16} />{uiText("Change Proposals")}</h2>
         <div style={listStyle}>
           {proposals.length === 0 ? (
-            <div style={{ color: "#8fa8c6", fontSize: "13px" }}>No proposals found</div>
+            <div style={{ color: "#8fa8c6", fontSize: "13px" }}>{uiText("No proposals found")}</div>
           ) : (
             proposals.map((proposal) => (
               <div key={proposal.proposal_id} style={itemStyle}>
@@ -408,20 +403,14 @@ export function VersionsTab() {
                 {proposal.state === "proposed" && (
                   <div style={{ display: "flex", gap: "6px" }}>
                     <button style={buttonStyle} onClick={() => approveProposal(proposal.proposal_id)}>
-                      <CheckCircle size={12} />
-                      Approve
-                    </button>
+                      <CheckCircle size={12} />{uiText("Approve")}</button>
                     <button style={buttonStyle} onClick={() => rejectProposal(proposal.proposal_id)}>
-                      <XCircle size={12} />
-                      Reject
-                    </button>
+                      <XCircle size={12} />{uiText("Reject")}</button>
                   </div>
                 )}
                 {proposal.state === "approved" && (
                   <button style={buttonStyle} onClick={() => publishProposal(proposal.proposal_id)}>
-                    <Send size={12} />
-                    Publish
-                  </button>
+                    <Send size={12} />{uiText("Publish")}</button>
                 )}
                 <button
                   style={buttonStyle}
@@ -430,9 +419,7 @@ export function VersionsTab() {
                     setShowProposalModal(true);
                   }}
                 >
-                  <FileText size={12} />
-                  Details
-                </button>
+                  <FileText size={12} />{uiText("Details")}</button>
               </div>
             ))
           )}
@@ -443,45 +430,36 @@ export function VersionsTab() {
         <div style={modalOverlayStyle} onClick={() => setShowProposalModal(false)}>
           <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "16px" }}>
-              <h3 style={{ margin: 0, color: "#ebf3ff", fontSize: "16px" }}>Proposal Details</h3>
+              <h3 style={{ margin: 0, color: "#ebf3ff", fontSize: "16px" }}>{uiText("Proposal Details")}</h3>
               <button onClick={() => setShowProposalModal(false)} style={{ background: "none", border: "none", color: "#8fa8c6", cursor: "pointer" }}>
                 <X size={18} />
               </button>
             </div>
             <div style={{ marginBottom: "12px" }}>
-              <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>
-                Summary
-              </label>
+              <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>{uiText("Summary")}</label>
               <div style={{ color: "#ebf3ff", fontSize: "13px" }}>{selectedProposal.summary}</div>
             </div>
             <div style={{ marginBottom: "12px" }}>
-              <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>
-                State
-              </label>
+              <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>{uiText("State")}</label>
               <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#ebf3ff", fontSize: "13px" }}>
                 {getStateIcon(selectedProposal.state)}
                 {selectedProposal.state}
               </div>
             </div>
             <div style={{ marginBottom: "12px" }}>
-              <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>
-                Impact Analysis
-              </label>
+              <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>{uiText("Impact Analysis")}</label>
               <pre style={{ background: "rgba(3, 9, 18, 0.8)", padding: "12px", borderRadius: "6px", color: "#ebf3ff", fontSize: "12px", overflow: "auto" }}>
                 {JSON.stringify(selectedProposal.impact_analysis, null, 2)}
               </pre>
             </div>
             <div style={{ marginBottom: "12px" }}>
-              <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>
-                SHACL Validation
-              </label>
+              <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>{uiText("SHACL Validation")}</label>
               <pre style={{ background: "rgba(3, 9, 18, 0.8)", padding: "12px", borderRadius: "6px", color: "#ebf3ff", fontSize: "12px", overflow: "auto" }}>
                 {JSON.stringify(selectedProposal.shacl_validation, null, 2)}
               </pre>
             </div>
             <div>
-              <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>
-                Comments ({selectedProposal.comments.length})
+              <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>{uiText("Comments (")}{selectedProposal.comments.length})
               </label>
               <div style={{ maxHeight: "120px", overflow: "auto" }}>
                 {selectedProposal.comments.map((comment) => (
@@ -500,16 +478,14 @@ export function VersionsTab() {
         <div style={modalOverlayStyle} onClick={() => setShowCompareModal(false)}>
           <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "16px" }}>
-              <h3 style={{ margin: 0, color: "#ebf3ff", fontSize: "16px" }}>Compare Versions</h3>
+              <h3 style={{ margin: 0, color: "#ebf3ff", fontSize: "16px" }}>{uiText("Compare Versions")}</h3>
               <button onClick={() => setShowCompareModal(false)} style={{ background: "none", border: "none", color: "#8fa8c6", cursor: "pointer" }}>
                 <X size={18} />
               </button>
             </div>
             <div style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
               <div style={{ flex: 1 }}>
-                <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>
-                  Version 1
-                </label>
+                <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>{uiText("Version 1")}</label>
                 <input
                   type="text"
                   value={comparePair.v1}
@@ -518,9 +494,7 @@ export function VersionsTab() {
                 />
               </div>
               <div style={{ flex: 1 }}>
-                <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>
-                  Version 2
-                </label>
+                <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>{uiText("Version 2")}</label>
                 <input
                   type="text"
                   value={comparePair.v2}
@@ -531,7 +505,7 @@ export function VersionsTab() {
             </div>
             <button style={buttonStyle} onClick={runVersionComparison} disabled={isLoading}>
               <Scale size={12} />
-              {isLoading ? "Comparing..." : "Compare"}
+              {isLoading ? uiText("Comparing...") : uiText("Compare")}
             </button>
             {compareResult && (
               <pre style={{ marginTop: "16px", background: "rgba(3, 9, 18, 0.8)", padding: "12px", borderRadius: "6px", color: "#ebf3ff", fontSize: "12px", overflow: "auto" }}>

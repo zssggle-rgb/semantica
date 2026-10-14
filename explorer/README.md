@@ -2,6 +2,8 @@
 
 A browser-based graph workbench for the [Semantica](https://github.com/semantica-agi/semantica) platform. Pan and zoom live graphs, scrub the timeline, trace every decision's causal chain, resolve duplicates, and author your ontology visually. Built on React 19 + Sigma.js.
 
+This fork adds a Chinese/English interface to the pinned 0.7.0 frontend. See [中文化使用与构建](LOCALIZATION.md) for language selection, local editor resources, and deployment. An official pip install alone does not include this fork's Chinese frontend.
+
 ---
 
 ## Requirements

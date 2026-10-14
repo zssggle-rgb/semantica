@@ -112,6 +112,10 @@ export function TimelinePanel({ onTimeChange, minDate, maxDate }: TimelinePanelP
       timelineRef.current = nextTimeline;
       playheadRef.current = defaultTime;
       nextTimeline.addCustomTime(defaultTime, PLAYHEAD_ID);
+      nextTimeline.setCustomTimeTitle(
+        (date: Date) => `${uiText("Current")}: ${moment(date).locale(uiLanguage === "zh-CN" ? "zh-cn" : "en").format("llll")}`,
+        PLAYHEAD_ID,
+      );
       nextTimeline.on("timechange", (props: { id: string; time: Date }) => {
         if (props.id !== PLAYHEAD_ID) return;
         playheadRef.current = props.time;

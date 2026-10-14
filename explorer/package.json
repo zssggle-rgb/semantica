@@ -27,7 +27,7 @@
     "graphology-shortest-path": "^2.1.0",
     "i18next": "^26.4.5",
     "lucide-react": "^1.7.0",
-    "monaco-editor": "0.55.1",
+    "monaco-editor": "0.52.2",
     "playwright": "^1.59.1",
     "react": "^19.2.4",
     "react-arborist": "^3.4.3",

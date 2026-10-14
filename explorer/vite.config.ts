@@ -19,9 +19,7 @@ export default defineConfig({
       configureServer(server) {
         const resourceRoot = path.resolve(__dirname, 'node_modules/monaco-editor/min/vs')
         server.middlewares.use('/assets/monaco/vs', (request, response, next) => {
-          let resourcePath = path.resolve(resourceRoot, `.${new URL(request.url ?? '/', 'http://localhost').pathname}`)
-          // Monaco 0.55.1 ships this named AMD module with a doubled extension.
-          if (resourcePath === path.join(resourceRoot, 'nls.messages.zh-cn.js')) resourcePath += '.js'
+          const resourcePath = path.resolve(resourceRoot, `.${new URL(request.url ?? '/', 'http://localhost').pathname}`)
           if (!resourcePath.startsWith(`${resourceRoot}${path.sep}`) || !existsSync(resourcePath)) {
             next()
             return
@@ -36,10 +34,6 @@ export default defineConfig({
           path.resolve(__dirname, 'node_modules/monaco-editor/min/vs'),
           path.resolve(__dirname, '../semantica/static/assets/monaco/vs'),
           { recursive: true },
-        )
-        cpSync(
-          path.resolve(__dirname, 'node_modules/monaco-editor/min/vs/nls.messages.zh-cn.js.js'),
-          path.resolve(__dirname, '../semantica/static/assets/monaco/vs/nls.messages.zh-cn.js'),
         )
       },
     },

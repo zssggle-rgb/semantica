@@ -1,3 +1,4 @@
+import { uiText } from "../../../i18n";
 import type { CSSProperties } from "react";
 
 import type { GraphPlugin } from "./types";
@@ -19,8 +20,8 @@ export const temporalOverlayPlugin: GraphPlugin = {
   toolbarItems: (context) => [
     {
       id: "temporal-toggle",
-      label: "Temporal",
-      title: "Toggle temporal context panel",
+      label: uiText("Temporal"),
+      title: uiText("Toggle temporal context panel"),
       active: context.isPanelOpen(TEMPORAL_PANEL_ID),
       order: 40,
       onClick: () => context.dispatchAction({ type: "togglePanel", panelId: TEMPORAL_PANEL_ID }),
@@ -58,10 +59,10 @@ export const temporalOverlayPlugin: GraphPlugin = {
             pointerEvents: "none",
           }}
         >
-          <span style={{ color: "#7fc6ff", fontWeight: 700 }}>Temporal</span>
+          <span style={{ color: "#7fc6ff", fontWeight: 700 }}>{uiText("Temporal")}</span>
           <span>{label}</span>
           {typeof temporal.activeNodeCount === "number" ? (
-            <span style={{ color: "#8ea4be" }}>{temporal.activeNodeCount.toLocaleString()} active</span>
+            <span style={{ color: "#8ea4be" }}>{temporal.activeNodeCount.toLocaleString()}{uiText("active")}</span>
           ) : null}
         </div>
       ),
@@ -75,7 +76,7 @@ export const temporalOverlayPlugin: GraphPlugin = {
     const temporal = context.getTemporalState();
     return {
       id: TEMPORAL_PANEL_ID,
-      title: "Temporal Context",
+      title: uiText("Temporal Context"),
       placement: "bottom",
       order: 30,
       defaultOpen: false,
@@ -83,21 +84,21 @@ export const temporalOverlayPlugin: GraphPlugin = {
       preferredHeight: 220,
       content: (
         <div style={panelBodyStyle}>
-          <div style={panelEyebrowStyle}>Current scrubber state</div>
+          <div style={panelEyebrowStyle}>{uiText("Current scrubber state")}</div>
           <div style={detailRowStyle}>
-            <span style={detailLabelStyle}>Current</span>
+            <span style={detailLabelStyle}>{uiText("Current")}</span>
             <span style={detailValueStyle}>{formatTemporalLabel(temporal?.currentTime ?? null)}</span>
           </div>
           <div style={detailRowStyle}>
-            <span style={detailLabelStyle}>Bounds</span>
+            <span style={detailLabelStyle}>{uiText("Bounds")}</span>
             <span style={detailValueStyle}>
-              {(temporal?.minDate ?? "1970")} → {(temporal?.maxDate ?? "now")}
+              {(temporal?.minDate ?? "1970")} → {(temporal?.maxDate ?? uiText("now"))}
             </span>
           </div>
           <div style={detailRowStyle}>
-            <span style={detailLabelStyle}>Active nodes</span>
+            <span style={detailLabelStyle}>{uiText("Active nodes")}</span>
             <span style={detailValueStyle}>
-              {typeof temporal?.activeNodeCount === "number" ? temporal.activeNodeCount.toLocaleString() : "All"}
+              {typeof temporal?.activeNodeCount === "number" ? temporal.activeNodeCount.toLocaleString() : uiText("All")}
             </span>
           </div>
         </div>

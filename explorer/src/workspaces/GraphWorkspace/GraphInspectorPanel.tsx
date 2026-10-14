@@ -1,3 +1,4 @@
+import { uiText } from "../../i18n";
 import type { CSSProperties } from "react";
 import { Loader2 } from "lucide-react";
 import { graph } from "../../store/graphStore";
@@ -90,10 +91,10 @@ function PathDistanceIntelPanel({ result }: { result: PathResponse }) {
             fontWeight: 700,
           }}
         >
-          {result.distance_band} · {result.hop_count} hop{result.hop_count !== 1 ? "s" : ""}
+          {result.distance_band} · {result.hop_count}{uiText("hop")}{result.hop_count !== 1 ? uiText("s") : ""}
         </span>
         {(result.alternative_path_count ?? 0) > 0 && (
-          <span style={subtleChipStyle}>{result.alternative_path_count} alt path{result.alternative_path_count !== 1 ? "s" : ""}</span>
+          <span style={subtleChipStyle}>{result.alternative_path_count}{uiText("alt path")}{result.alternative_path_count !== 1 ? uiText("s") : ""}</span>
         )}
       </div>
 
@@ -101,7 +102,7 @@ function PathDistanceIntelPanel({ result }: { result: PathResponse }) {
       {hasMetrics && <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
         {result.confidence_decay != null && (
           <div style={metricCardStyle}>
-            <div style={metricLabelStyle}>Confidence Decay</div>
+            <div style={metricLabelStyle}>{uiText("Confidence Decay")}</div>
             <div
               style={{
                 ...metricValueStyle,
@@ -124,7 +125,7 @@ function PathDistanceIntelPanel({ result }: { result: PathResponse }) {
         )}
         {result.semantic_similarity != null && (
           <div style={metricCardStyle}>
-            <div style={metricLabelStyle}>Semantic Sim.</div>
+            <div style={metricLabelStyle}>{uiText("Semantic Sim.")}</div>
             <div style={{ ...metricValueStyle, color: "#79c0ff" }}>
               {(result.semantic_similarity * 100).toFixed(1)}%
             </div>
@@ -135,7 +136,7 @@ function PathDistanceIntelPanel({ result }: { result: PathResponse }) {
         )}
         {result.path_coherence_score != null && (
           <div style={metricCardStyle}>
-            <div style={metricLabelStyle}>Path Coherence</div>
+            <div style={metricLabelStyle}>{uiText("Path Coherence")}</div>
             <div style={{ ...metricValueStyle, color: "#a5d6a7" }}>
               {(result.path_coherence_score * 100).toFixed(1)}%
             </div>
@@ -143,7 +144,7 @@ function PathDistanceIntelPanel({ result }: { result: PathResponse }) {
         )}
         {result.bottleneck_node && (
           <div style={metricCardStyle}>
-            <div style={metricLabelStyle}>Bottleneck</div>
+            <div style={metricLabelStyle}>{uiText("Bottleneck")}</div>
             <div
               style={{
                 ...metricValueStyle,
@@ -228,7 +229,7 @@ function PathFlowViz({
   onFocusNode?: (nodeId: string) => void;
 }) {
   if (path.length === 0) {
-    return <div style={emptyTextStyle}>No path found between the selected nodes.</div>;
+    return <div style={emptyTextStyle}>{uiText("No path found between the selected nodes.")}</div>;
   }
 
   return (
@@ -247,7 +248,7 @@ function PathFlowViz({
               {/* Node chip */}
               <button
                 onClick={() => onFocusNode?.(nodeId)}
-                title={nodeId === bottleneckNodeId ? `Bottleneck: ${nodeId}` : `Focus: ${nodeId}`}
+                title={nodeId === bottleneckNodeId ? uiText("Bottleneck: {{v0}}", { v0: (nodeId) }) : uiText("Focus: {{v0}}", { v0: (nodeId) })}
                 style={{
                   ...pathNodeChipStyle,
                   cursor: onFocusNode ? "pointer" : "default",
@@ -280,10 +281,10 @@ function PathFlowViz({
 
       {/* Weight badge */}
       <div style={{ marginTop: 8, display: "flex", alignItems: "center", gap: 8 }}>
-        <span style={{ color: "#6a7f97", fontSize: 11 }}>Total weight:</span>
+        <span style={{ color: "#6a7f97", fontSize: 11 }}>{uiText("Total weight:")}</span>
         <span style={{ color: "#79c0ff", fontSize: 12, fontWeight: 700 }}>{totalWeight.toFixed(3)}</span>
         <span style={{ color: "#6a7f97", fontSize: 11 }}>·</span>
-        <span style={{ color: "#6a7f97", fontSize: 11 }}>{path.length} hops</span>
+        <span style={{ color: "#6a7f97", fontSize: 11 }}>{path.length}{uiText("hops")}</span>
       </div>
     </div>
   );
@@ -317,9 +318,7 @@ export function GraphInspectorPanel({
         <div style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(98, 226, 205, 0.07)", border: `1px solid ${GRAPH_THEME.ui.surface.panelBorder}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
           <div style={{ width: 14, height: 14, borderRadius: "50%", background: GRAPH_THEME.ui.timeline.playheadSoft }} />
         </div>
-        <p style={{ color: GRAPH_THEME.ui.text.muted, fontSize: 14, margin: 0, lineHeight: 1.6 }}>
-          Search for a node or click one in the canvas to inspect its properties.
-        </p>
+        <p style={{ color: GRAPH_THEME.ui.text.muted, fontSize: 14, margin: 0, lineHeight: 1.6 }}>{uiText("Search for a node or click one in the canvas to inspect its properties.")}</p>
       </div>
     );
   }
@@ -336,7 +335,7 @@ export function GraphInspectorPanel({
         <div style={{ borderBottom: `1px solid ${GRAPH_THEME.ui.surface.divider}`, paddingBottom: 16 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
             <span style={{ background: GRAPH_THEME.ui.timeline.playhead, boxShadow: "0 0 10px rgba(98, 226, 205, 0.34)", width: 8, height: 8, borderRadius: "50%" }} />
-            <span style={{ color: GRAPH_THEME.ui.timeline.playhead, fontSize: 12, fontWeight: 700 }}>Selection</span>
+            <span style={{ color: GRAPH_THEME.ui.timeline.playhead, fontSize: 12, fontWeight: 700 }}>{uiText("Selection")}</span>
           </div>
           <h3 style={{ margin: 0, color: GRAPH_THEME.ui.text.strong, fontSize: 20, fontWeight: 700, wordBreak: "break-word" }}>
             {nodeId}
@@ -344,10 +343,10 @@ export function GraphInspectorPanel({
           <div style={{ color: GRAPH_THEME.ui.text.muted, fontSize: 12, marginTop: 6, fontFamily: "monospace", wordBreak: "break-all" }}>{nodeId}</div>
         </div>
         <div style={groupedSelectionNoticeStyle}>
-          <div style={{ color: GRAPH_THEME.ui.text.strong, fontWeight: 600, marginBottom: 6 }}>Selected item is not directly inspectable in the current graph.</div>
+          <div style={{ color: GRAPH_THEME.ui.text.strong, fontWeight: 600, marginBottom: 6 }}>{uiText("Selected item is not directly inspectable in the current graph.")}</div>
           <div style={{ color: GRAPH_THEME.ui.text.body, fontSize: 13, lineHeight: 1.6 }}>
             {canActivateFocused
-              ? "Use Focus to resolve this grouped selection to its canonical node."
+              ? uiText("Use Focus to resolve this grouped selection to its canonical node.")
               : focusedUnavailableReasonText(focusedUnavailableReason)}
           </div>
         </div>
@@ -384,7 +383,7 @@ export function GraphInspectorPanel({
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
           <span style={{ background: accentColor, boxShadow: `0 0 10px ${accentColor}`, width: 8, height: 8, borderRadius: "50%" }} />
           <span style={{ color: accentColor, fontSize: 12, fontWeight: 700 }}>
-            {groupedDisplaySelection ? "Grouped Selection" : (attributes?.nodeType || "Entity")}
+            {groupedDisplaySelection ? uiText("Grouped Selection") : (attributes?.nodeType || uiText("Entity"))}
           </span>
         </div>
         <h3 style={{ margin: 0, color: GRAPH_THEME.ui.text.strong, fontSize: 20, fontWeight: 700, wordBreak: "break-word" }}>
@@ -395,20 +394,20 @@ export function GraphInspectorPanel({
         </div>
         {groupedDisplaySelection ? (
           <div style={groupedSelectionNoticeStyle}>
-            <div style={{ color: GRAPH_THEME.ui.text.strong, fontWeight: 600, marginBottom: 6 }}>This grouped item stays display-level until you explicitly enter Focused mode.</div>
+            <div style={{ color: GRAPH_THEME.ui.text.strong, fontWeight: 600, marginBottom: 6 }}>{uiText("This grouped item stays display-level until you explicitly enter Focused mode.")}</div>
             <div style={{ color: GRAPH_THEME.ui.text.body, fontSize: 13, lineHeight: 1.6 }}>
               {canActivateFocused
-                ? `Canonical node available: ${effectiveNodeId}`
+                ? uiText("Canonical node available: {{v0}}", { v0: (effectiveNodeId) })
                 : focusedUnavailableReasonText(focusedUnavailableReason)}
             </div>
           </div>
         ) : null}
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 12 }}>
           {attributes?.valid_from || attributes?.valid_until ? (
-            <span style={subtleChipStyle}>temporal</span>
+            <span style={subtleChipStyle}>{uiText("temporal")}</span>
           ) : null}
-          {attribution.length ? <span style={subtleChipStyle}>{attribution.length} source fields</span> : null}
-          {predictions.length ? <span style={subtleChipStyle}>{predictions.length} candidate links</span> : null}
+          {attribution.length ? <span style={subtleChipStyle}>{attribution.length}{uiText("source fields")}</span> : null}
+          {predictions.length ? <span style={subtleChipStyle}>{predictions.length}{uiText("candidate links")}</span> : null}
         </div>
       </div>
 
@@ -422,7 +421,7 @@ export function GraphInspectorPanel({
 
       {/* Canonical nodes remain editable even when their current body is empty. */}
       <details className="node-panel-collapse" open>
-        <summary className="node-panel-summary">Content</summary>
+        <summary className="node-panel-summary">{uiText("Content")}</summary>
         <div className="node-panel-body" style={{ marginTop: 8 }}>
           <MarkdownContentViewer
             content={nodeContent}
@@ -435,7 +434,7 @@ export function GraphInspectorPanel({
 
       {/* Actions */}
       <section style={sectionStyle}>
-        <div style={sectionTitleStyle}>Actions</div>
+        <div style={sectionTitleStyle}>{uiText("Actions")}</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <button
             style={{ ...actionButtonStyle, width: "100%", justifyContent: "center", opacity: isRunningPredictions ? 0.7 : 1 }}
@@ -445,35 +444,31 @@ export function GraphInspectorPanel({
             {isRunningPredictions ? (
               <Loader2 size={14} className="animate-spin" style={{ marginRight: 6 }} />
             ) : null}
-            {isRunningPredictions ? "Running…" : "Run Link Prediction"}
+            {isRunningPredictions ? uiText("Running…") : uiText("Run Link Prediction")}
           </button>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            <button style={secondaryActionButtonStyle} onClick={() => onDownloadProvenance("json")} disabled={!actionNodeId}>
-              Provenance JSON
-            </button>
-            <button style={secondaryActionButtonStyle} onClick={() => onDownloadProvenance("markdown")} disabled={!actionNodeId}>
-              Provenance MD
-            </button>
+            <button style={secondaryActionButtonStyle} onClick={() => onDownloadProvenance("json")} disabled={!actionNodeId}>{uiText("Provenance JSON")}</button>
+            <button style={secondaryActionButtonStyle} onClick={() => onDownloadProvenance("markdown")} disabled={!actionNodeId}>{uiText("Provenance MD")}</button>
           </div>
         </div>
         <input
           value={predictionType}
           onChange={(event) => onPredictionTypeChange(event.target.value)}
-          placeholder="Optional candidate type filter, e.g. disease"
+          placeholder={uiText("Optional candidate type filter, e.g. disease")}
           style={inputStyle}
         />
       </section>
 
       {/* Trace Path */}
       <section style={sectionStyle}>
-        <div style={sectionTitleStyle}>Trace Path</div>
+        <div style={sectionTitleStyle}>{uiText("Trace Path")}</div>
         <input
           value={pathTargetId}
           onChange={(event) => onPathTargetChange(event.target.value)}
-          placeholder="Target node ID"
+          placeholder={uiText("Target node ID")}
           style={inputStyle}
         />
-        <button style={actionButtonStyle} onClick={onTracePath} disabled={!actionNodeId}>Trace Causal Path</button>
+        <button style={actionButtonStyle} onClick={onTracePath} disabled={!actionNodeId}>{uiText("Trace Causal Path")}</button>
 
         {pathResult?.path?.length ? (
           <>
@@ -487,15 +482,13 @@ export function GraphInspectorPanel({
             <PathDistanceIntelPanel result={pathResult} />
           </>
         ) : (
-          <div style={emptyTextStyle}>
-            Choose a target or click a candidate prediction to prepare a path trace.
-          </div>
+          <div style={emptyTextStyle}>{uiText("Choose a target or click a candidate prediction to prepare a path trace.")}</div>
         )}
       </section>
 
       {/* Candidate Links */}
       <details className="node-panel-collapse" open={predictions.length > 0}>
-        <summary className="node-panel-summary">Candidate Links</summary>
+        <summary className="node-panel-summary">{uiText("Candidate Links")}</summary>
         <div className="node-panel-body">
           {predictions.length > 0 ? (
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -530,17 +523,17 @@ export function GraphInspectorPanel({
           ) : isRunningPredictions ? (
             <div style={{ display: "flex", alignItems: "center", gap: 8, padding: 8, color: "#8b949e", fontSize: 12 }}>
               <Loader2 size={13} className="animate-spin" />
-              <span>Computing candidate links…</span>
+              <span>{uiText("Computing candidate links…")}</span>
             </div>
           ) : (
-            <div style={emptyTextStyle}>Run link prediction to surface likely next-hop relationships.</div>
+            <div style={emptyTextStyle}>{uiText("Run link prediction to surface likely next-hop relationships.")}</div>
           )}
         </div>
       </details>
 
       {/* Source Attribution */}
       <details className="node-panel-collapse">
-        <summary className="node-panel-summary">Source Attribution</summary>
+        <summary className="node-panel-summary">{uiText("Source Attribution")}</summary>
         <div className="node-panel-body">
           {attribution.length ? (
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -554,14 +547,14 @@ export function GraphInspectorPanel({
               ))}
             </div>
           ) : (
-            <div style={emptyTextStyle}>No explicit attribution metadata was found on this node.</div>
+            <div style={emptyTextStyle}>{uiText("No explicit attribution metadata was found on this node.")}</div>
           )}
         </div>
       </details>
 
       {/* Properties */}
       <details className="node-panel-collapse">
-        <summary className="node-panel-summary">Properties</summary>
+        <summary className="node-panel-summary">{uiText("Properties")}</summary>
         <div className="node-panel-body">
           {propertyEntries.length ? (
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -575,7 +568,7 @@ export function GraphInspectorPanel({
               ))}
             </div>
           ) : (
-            <div style={emptyTextStyle}>No additional properties are attached to this node.</div>
+            <div style={emptyTextStyle}>{uiText("No additional properties are attached to this node.")}</div>
           )}
         </div>
       </details>

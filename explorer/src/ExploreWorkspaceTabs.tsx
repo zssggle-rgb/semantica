@@ -1,3 +1,4 @@
+import { uiText } from "./i18n";
 export type ExploreView = 'graph' | 'memories' | 'vocabulary';
 
 type ExploreWorkspaceTabsProps = {
@@ -13,17 +14,11 @@ export function ExploreWorkspaceTabs({
 }: ExploreWorkspaceTabsProps) {
   return (
     <>
-      <button className="workspace-tab" data-active={activeView === 'graph'} onClick={() => onSelect('graph')}>
-        Semantica Explorer
-      </button>
+      <button className="workspace-tab" data-active={activeView === 'graph'} onClick={() => onSelect('graph')}>{uiText("Semantica Explorer")}</button>
       {agentMemoryAvailable ? (
-        <button className="workspace-tab" data-active={activeView === 'memories'} onClick={() => onSelect('memories')}>
-          Memories
-        </button>
+        <button className="workspace-tab" data-active={activeView === 'memories'} onClick={() => onSelect('memories')}>{uiText("Memories")}</button>
       ) : null}
-      <button className="workspace-tab" data-active={activeView === 'vocabulary'} onClick={() => onSelect('vocabulary')}>
-        Vocabulary Browser
-      </button>
+      <button className="workspace-tab" data-active={activeView === 'vocabulary'} onClick={() => onSelect('vocabulary')}>{uiText("Vocabulary Browser")}</button>
     </>
   );
 }

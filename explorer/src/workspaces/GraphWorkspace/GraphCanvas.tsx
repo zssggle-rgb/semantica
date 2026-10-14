@@ -1,3 +1,4 @@
+import { uiText } from "../../i18n";
 import { useEffect, useMemo, useRef, useCallback, forwardRef, useImperativeHandle, useState, type ReactNode } from "react";
 import Sigma from "sigma";
 import FA2Layout from "graphology-layout-forceatlas2/worker";
@@ -2663,9 +2664,7 @@ export const GraphCanvas = forwardRef<GraphCanvasHandle, GraphCanvasProps>(
               fontSize: 12,
               letterSpacing: "0.01em",
             }}
-          >
-            Fit View
-          </button>
+          >{uiText("Fit View")}</button>
         ) : null}
       </div>
     );

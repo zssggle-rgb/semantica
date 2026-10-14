@@ -1,3 +1,4 @@
+import { uiText } from "../../i18n";
 /**
  * src/workspaces/VocabularyWorkspace/Sidebar.tsx
  *
@@ -39,24 +40,20 @@ export function Sidebar({ onSelectConcept }: SidebarProps) {
         padding: '20px 20px 16px',
         borderBottom: '1px solid rgba(88,166,255,0.15)',
       }}>
-        <h2 style={{ fontSize: 18, color: '#c9d1d9', margin: '0 0 4px 0', fontWeight: 600 }}>
-          Ontology & Vocabulary
-        </h2>
+        <h2 style={{ fontSize: 18, color: '#c9d1d9', margin: '0 0 4px 0', fontWeight: 600 }}>{uiText("Ontology & Vocabulary")}</h2>
         <p style={{ color: '#8b949e', fontSize: 13, margin: 0 }}>
           {schemes.length
-            ? `${schemes.length} vocabulary scheme${schemes.length > 1 ? 's' : ''}`
-            : 'No vocabularies loaded'}
+            ? uiText("{{v0}} vocabulary scheme{{v1}}", { v0: (schemes.length), v1: (schemes.length > 1 ? 's' : '') })
+            : uiText("No vocabularies loaded")}
         </p>
       </div>
 
       {/* Scheme selector */}
       <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(88,166,255,0.1)' }}>
         {schemesLoading ? (
-          <div style={{ color: '#8b949e', fontSize: 13 }}>Loading schemes…</div>
+          <div style={{ color: '#8b949e', fontSize: 13 }}>{uiText("Loading schemes…")}</div>
         ) : schemes.length === 0 ? (
-          <div style={{ color: '#484f58', fontSize: 13, fontStyle: 'italic' }}>
-            No schemes found. Import a .ttl or .rdf file below.
-          </div>
+          <div style={{ color: '#484f58', fontSize: 13, fontStyle: 'italic' }}>{uiText("No schemes found. Import a .ttl or .rdf file below.")}</div>
         ) : (
           <select
             value={selectedSchemeUri || ''}
@@ -84,14 +81,12 @@ export function Sidebar({ onSelectConcept }: SidebarProps) {
         flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column',
       }}>
         {treeLoading ? (
-          <div style={{ padding: 20, color: '#8b949e', fontSize: 13, textAlign: 'center' }}>
-            Loading hierarchy…
-          </div>
+          <div style={{ padding: 20, color: '#8b949e', fontSize: 13, textAlign: 'center' }}>{uiText("Loading hierarchy…")}</div>
         ) : hierarchy.length === 0 ? (
           <div style={{ padding: 20, color: '#484f58', fontSize: 13, textAlign: 'center', fontStyle: 'italic' }}>
             {selectedSchemeUri
-              ? 'No concepts found in this scheme.'
-              : 'Select a scheme to browse concepts.'}
+              ? uiText("No concepts found in this scheme.")
+              : uiText("Select a scheme to browse concepts.")}
           </div>
         ) : (
           <div style={{ flex: 1, overflow: 'hidden' }}>

@@ -1,3 +1,4 @@
+import { uiText } from "../../../i18n";
 import type { CSSProperties } from "react";
 
 import type { GraphPlugin } from "./types";
@@ -29,8 +30,8 @@ export const neighborhoodPanelPlugin: GraphPlugin = {
   toolbarItems: (context) => [
     {
       id: "neighborhood-toggle",
-      label: "Neighbors",
-      title: "Toggle neighborhood panel",
+      label: uiText("Neighbors"),
+      title: uiText("Toggle neighborhood panel"),
       active: context.isPanelOpen(NEIGHBORHOOD_PANEL_ID),
       order: 30,
       onClick: () => context.dispatchAction({ type: "togglePanel", panelId: NEIGHBORHOOD_PANEL_ID }),
@@ -46,13 +47,13 @@ export const neighborhoodPanelPlugin: GraphPlugin = {
     if (!selected) {
       return {
         id: NEIGHBORHOOD_PANEL_ID,
-        title: "Neighborhood",
+        title: uiText("Neighborhood"),
         placement: "bottom",
         order: 20,
         defaultOpen: false,
         preferredWidth: 360,
         preferredHeight: 260,
-        content: <div style={emptyTextStyle}>Select a node to inspect its local neighborhood.</div>,
+        content: <div style={emptyTextStyle}>{uiText("Select a node to inspect its local neighborhood.")}</div>,
       };
     }
 
@@ -91,7 +92,7 @@ export const neighborhoodPanelPlugin: GraphPlugin = {
 
     return {
       id: NEIGHBORHOOD_PANEL_ID,
-      title: "Neighborhood",
+      title: uiText("Neighborhood"),
       placement: "bottom",
       order: 20,
       defaultOpen: false,
@@ -101,35 +102,28 @@ export const neighborhoodPanelPlugin: GraphPlugin = {
         <div style={panelBodyStyle}>
           <div style={panelEyebrowStyle}>{selected.label}</div>
           <div style={summaryStyle}>
-            {selected.neighborCount.toLocaleString()} direct neighbors in the full graph
-          </div>
+            {selected.neighborCount.toLocaleString()}{uiText("direct neighbors in the full graph")}</div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <button
               type="button"
               onClick={() => context.dispatchAction({ type: "collapseNeighborhood" })}
               disabled={!selected.canCollapseNeighborhood || selected.isNeighborhoodCollapsed}
               style={controlButtonStyle}
-            >
-              Collapse Neighborhood
-            </button>
+            >{uiText("Collapse Neighborhood")}</button>
             <button
               type="button"
               onClick={() => context.dispatchAction({ type: "expandNeighborhood" })}
               disabled={!selected.isNeighborhoodCollapsed}
               style={controlButtonStyle}
-            >
-              Expand Neighborhood
-            </button>
+            >{uiText("Expand Neighborhood")}</button>
           </div>
           {hiddenNeighborCount > 0 ? (
             <div style={summaryStyle}>
-              {hiddenNeighborCount.toLocaleString()} lower-priority neighbors are collapsed in the current view.
-            </div>
+              {hiddenNeighborCount.toLocaleString()}{uiText("lower-priority neighbors are collapsed in the current view.")}</div>
           ) : null}
           {aggregatedEdgeCount > 0 ? (
             <div style={summaryStyle}>
-              {aggregatedEdgeCount.toLocaleString()} aggregated structural bundle{aggregatedEdgeCount === 1 ? "" : "s"} visible.
-            </div>
+              {aggregatedEdgeCount.toLocaleString()}{uiText("aggregated structural bundle")}{aggregatedEdgeCount === 1 ? "" : uiText("s")}{uiText("visible.")}</div>
           ) : null}
           {neighbors.length ? (
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -155,7 +149,7 @@ export const neighborhoodPanelPlugin: GraphPlugin = {
               ))}
             </div>
           ) : (
-            <div style={emptyTextStyle}>No direct neighbors are available for this node.</div>
+            <div style={emptyTextStyle}>{uiText("No direct neighbors are available for this node.")}</div>
           )}
         </div>
       ),

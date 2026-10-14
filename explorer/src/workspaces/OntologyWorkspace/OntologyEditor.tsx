@@ -1,3 +1,4 @@
+import { uiText } from "../../i18n";
 import { useCallback, useEffect, useState } from "react";
 import {
   ReactFlow,
@@ -345,7 +346,7 @@ export function OntologyEditor() {
 
   const addProperty = useCallback(() => {
     if (nodes.length < 2) {
-      alert("Add at least two classes before creating a property edge.");
+      alert(uiText("Add at least two classes before creating a property edge."));
       return;
     }
     const newId = `prop_${Date.now()}`;
@@ -400,7 +401,7 @@ export function OntologyEditor() {
 
   const saveDraft = useCallback(async () => {
     if (!ontologyUri) {
-      alert("Please select an ontology first");
+      alert(uiText("Please select an ontology first"));
       return;
     }
     setIsSaving(true);
@@ -417,11 +418,11 @@ export function OntologyEditor() {
       });
       if (response.ok) {
         const data = await response.json();
-        alert(`Draft saved: ${data.draft_id}`);
+        alert(uiText("Draft saved: {{v0}}", { v0: (data.draft_id) }));
       }
     } catch (error) {
       console.error("Failed to save draft:", error);
-      alert("Failed to save draft");
+      alert(uiText("Failed to save draft"));
     } finally {
       setIsSaving(false);
     }
@@ -560,7 +561,7 @@ export function OntologyEditor() {
       <style>{ontologyFlowThemeCss}</style>
       <div style={toolbarStyle}>
         <select
-          aria-label="Active ontology"
+          aria-label={uiText("Active ontology")}
           value={ontologyUri}
           onChange={(event) => {
             setOntologyUri(event.target.value);
@@ -570,7 +571,7 @@ export function OntologyEditor() {
           }}
           style={selectStyle}
         >
-          <option value="">Select ontology...</option>
+          <option value="">{uiText("Select ontology...")}</option>
           {registry.map((entry) => (
             <option key={entry.uri} value={entry.uri}>
               {entry.name || entry.uri}
@@ -578,33 +579,21 @@ export function OntologyEditor() {
           ))}
         </select>
         <button style={toolbarButtonStyle} onClick={addClass}>
-          <Plus size={14} />
-          Add Class
-        </button>
+          <Plus size={14} />{uiText("Add Class")}</button>
         <button style={toolbarButtonStyle} onClick={addProperty} disabled={nodes.length < 2}>
-          <GitBranch size={14} />
-          Add Property
-        </button>
+          <GitBranch size={14} />{uiText("Add Property")}</button>
         <button style={toolbarButtonStyle} onClick={addIndividual}>
-          <User size={14} />
-          Add Individual
-        </button>
+          <User size={14} />{uiText("Add Individual")}</button>
         <button style={toolbarButtonStyle} onClick={addRestriction}>
-          <Shield size={14} />
-          Add Restriction
-        </button>
+          <Shield size={14} />{uiText("Add Restriction")}</button>
         <button style={toolbarButtonStyle} onClick={addAxiom}>
-          <FileText size={14} />
-          Add Axiom
-        </button>
+          <FileText size={14} />{uiText("Add Axiom")}</button>
         <button style={toolbarButtonStyle} onClick={autoLayout}>
-          <Layout size={14} />
-          Auto Layout
-        </button>
+          <Layout size={14} />{uiText("Auto Layout")}</button>
         <div style={{ flex: 1 }} />
         <button style={toolbarButtonStyle} onClick={saveDraft} disabled={isSaving}>
           <Send size={14} />
-          {isSaving ? "Saving..." : "Propose"}
+          {isSaving ? uiText("Saving...") : uiText("Propose")}
         </button>
       </div>
 
@@ -632,18 +621,16 @@ export function OntologyEditor() {
           </ReactFlow>
 
           {isLoadingGraph && (
-            <div style={canvasMessageStyle}>Loading ontology structure…</div>
+            <div style={canvasMessageStyle}>{uiText("Loading ontology structure…")}</div>
           )}
           {!isLoadingGraph && graphError && (
             <div style={{ ...canvasMessageStyle, color: "#ff9a8d" }}>{graphError}</div>
           )}
           {!isLoadingGraph && !graphError && unownedEntity && (
-            <div style={{ ...canvasMessageStyle, color: "#f2b66d" }}>
-              No registered ontology owns {unownedEntity}. Pick an ontology above to start editing.
-            </div>
+            <div style={{ ...canvasMessageStyle, color: "#f2b66d" }}>{uiText("No registered ontology owns")}{unownedEntity}{uiText(". Pick an ontology above to start editing.")}</div>
           )}
           {!isLoadingGraph && !graphError && !unownedEntity && ontologyUri && nodes.length === 0 && (
-            <div style={canvasMessageStyle}>This ontology has no editable classes or properties.</div>
+            <div style={canvasMessageStyle}>{uiText("This ontology has no editable classes or properties.")}</div>
           )}
 
           {showContext && (
@@ -652,19 +639,13 @@ export function OntologyEditor() {
                 <>
                   {!("source" in showContext.element) && (
                     <div style={contextItemStyle} onClick={renameSelected}>
-                      <Pencil size={14} />
-                      Rename
-                    </div>
+                      <Pencil size={14} />{uiText("Rename")}</div>
                   )}
                   <div style={contextItemStyle} onClick={deleteSelected}>
-                    <Trash2 size={14} />
-                    Delete
-                  </div>
+                    <Trash2 size={14} />{uiText("Delete")}</div>
                 </>
               ) : (
-                <div style={{ ...contextItemStyle, cursor: "default", color: "#8fa8c6" }}>
-                  This term is read-only
-                </div>
+                <div style={{ ...contextItemStyle, cursor: "default", color: "#8fa8c6" }}>{uiText("This term is read-only")}</div>
               )}
             </div>
           )}
@@ -674,14 +655,14 @@ export function OntologyEditor() {
           <div style={detailPanelStyle}>
             <h3 style={{ margin: "0 0 16px", color: "#ebf3ff", fontSize: "16px" }}>
               {"source" in selectedElement
-                ? "Relationship Details"
+                ? uiText("Relationship Details")
                 : selectedElement.data.entityType === "property"
-                  ? "Property Details"
+                  ? uiText("Property Details")
                   : selectedElement.data.entityType === "ontology"
-                    ? "Ontology Details"
+                    ? uiText("Ontology Details")
                     : selectedElement.data.entityType === "external"
-                      ? "External Term Details"
-                      : "Class Details"}
+                      ? uiText("External Term Details")
+                      : uiText("Class Details")}
             </h3>
             <div style={{ marginBottom: "12px" }}>
               <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>
@@ -694,9 +675,7 @@ export function OntologyEditor() {
             {!("source" in selectedElement) && (
               <>
                 <div style={{ marginBottom: "12px" }}>
-                  <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>
-                    Label
-                  </label>
+                  <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>{uiText("Label")}</label>
                   <input
                     type="text"
                     value={String(selectedElement.data.label ?? "")}
@@ -739,9 +718,7 @@ export function OntologyEditor() {
                   />
                 </div>
                 <div style={{ marginBottom: "12px" }}>
-                  <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>
-                    Type
-                  </label>
+                  <label style={{ display: "block", color: "#8fa8c6", fontSize: "12px", marginBottom: "4px" }}>{uiText("Type")}</label>
                   <div style={{ color: "#ebf3ff", fontSize: "13px" }}>
                     {selectedElement.data.type || "owl:Class"}
                   </div>

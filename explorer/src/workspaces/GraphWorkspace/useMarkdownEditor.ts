@@ -1,3 +1,4 @@
+import { uiText } from "../../i18n";
 import {
   useCallback,
   useEffect,
@@ -148,7 +149,7 @@ export function useMarkdownEditor({
     if (!resource || saving) return;
     if (
       dirty
-      && !window.confirm("Discard this draft and reload the latest applied version?")
+      && !window.confirm(uiText("Discard this draft and reload the latest applied version?"))
     ) return;
     await beginEdit();
   }, [beginEdit, dirty, resource, saving]);

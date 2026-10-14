@@ -1,3 +1,4 @@
+import { uiText } from "../../i18n";
 /**
  * src/workspaces/EnrichWorkspace/RegistryTab.tsx
  *
@@ -15,9 +16,9 @@ const OP_META: Record<
   import:       { label: "IMPORT",       color: "#4aa3ff", bg: "rgba(74,163,255,0.12)",  border: "rgba(74,163,255,0.28)" },
   export:       { label: "EXPORT",       color: "#8fa8c6", bg: "rgba(143,168,198,0.08)", border: "rgba(143,168,198,0.18)" },
   merge:        { label: "MERGE",        color: "#f2b66d", bg: "rgba(242,182,109,0.12)", border: "rgba(242,182,109,0.28)" },
-  "add-node":   { label: "ADD NODE",     color: "#4cc38a", bg: "rgba(76,195,138,0.12)",  border: "rgba(76,195,138,0.28)" },
-  "update-node": { label: "UPDATE NODE",  color: "#79c0ff", bg: "rgba(121,192,255,0.10)", border: "rgba(121,192,255,0.24)" },
-  "add-edge":   { label: "ADD EDGE",     color: "#4cc38a", bg: "rgba(76,195,138,0.10)",  border: "rgba(76,195,138,0.22)" },
+  "add-node":   { label: uiText("ADD NODE"),     color: "#4cc38a", bg: "rgba(76,195,138,0.12)",  border: "rgba(76,195,138,0.28)" },
+  "update-node": { label: uiText("UPDATE NODE"),  color: "#79c0ff", bg: "rgba(121,192,255,0.10)", border: "rgba(121,192,255,0.24)" },
+  "add-edge":   { label: uiText("ADD EDGE"),     color: "#4cc38a", bg: "rgba(76,195,138,0.10)",  border: "rgba(76,195,138,0.22)" },
   delete:       { label: "DELETE",       color: "#ff7b72", bg: "rgba(255,123,114,0.12)", border: "rgba(255,123,114,0.28)" },
   infer:        { label: "INFER",        color: "#d2a8ff", bg: "rgba(210,168,255,0.12)", border: "rgba(210,168,255,0.28)" },
   "vocab-import": { label: "VOCAB",      color: "#79c0ff", bg: "rgba(121,192,255,0.12)", border: "rgba(121,192,255,0.28)" },
@@ -76,7 +77,7 @@ function EntryRow({ entry }: { entry: ReturnType<typeof useRegistry>[number] }) 
         {hasDetail ? (
           <button
             onClick={() => setExpanded((v) => !v)}
-            title={expanded ? "Collapse details" : "Expand details"}
+            title={expanded ? uiText("Collapse details") : uiText("Expand details")}
             style={expandBtnStyle}
           >
             {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
@@ -109,24 +110,22 @@ export function RegistryTab() {
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <ClipboardList size={18} color="#4aa3ff" />
           <div>
-            <div style={{ color: "#ebf3ff", fontSize: 16, fontWeight: 700 }}>Document Registry</div>
-            <div style={{ color: "#8b949e", fontSize: 12 }}>
-              Audit log of all KG and Ontology mutations this session
-            </div>
+            <div style={{ color: "#ebf3ff", fontSize: 16, fontWeight: 700 }}>{uiText("Document Registry")}</div>
+            <div style={{ color: "#8b949e", fontSize: 12 }}>{uiText("Audit log of all KG and Ontology mutations this session")}</div>
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ color: "#8fa8c6", fontSize: 12 }}>
-            {entries.length} event{entries.length !== 1 ? "s" : ""}
+            {entries.length}{uiText("event")}{entries.length !== 1 ? uiText("s") : ""}
           </span>
           {entries.length > 0 ? (
             <button
               onClick={clearRegistry}
-              title="Clear all events"
+              title={uiText("Clear all events")}
               style={clearBtnStyle}
             >
               <Trash2 size={13} />
-              <span>Clear</span>
+              <span>{uiText("Clear")}</span>
             </button>
           ) : null}
         </div>
@@ -161,7 +160,7 @@ export function RegistryTab() {
                   transition: "all 140ms ease",
                 }}
               >
-                {op === "all" ? "All" : (meta?.label ?? op)}
+                {op === "all" ? uiText("All") : (meta?.label ?? op)}
               </button>
             );
           })}
@@ -173,12 +172,8 @@ export function RegistryTab() {
         {filtered.length === 0 ? (
           <div style={emptyStateStyle}>
             <ClipboardList size={36} color="rgba(127,208,255,0.15)" />
-            <div style={{ color: "#8b949e", fontSize: 14, marginTop: 12, fontWeight: 500 }}>
-              No events recorded yet
-            </div>
-            <div style={{ color: "#6a7f97", fontSize: 12, marginTop: 4, textAlign: "center", maxWidth: 300 }}>
-              Import a file, run reasoning, or merge entities to see activity appear here.
-            </div>
+            <div style={{ color: "#8b949e", fontSize: 14, marginTop: 12, fontWeight: 500 }}>{uiText("No events recorded yet")}</div>
+            <div style={{ color: "#6a7f97", fontSize: 12, marginTop: 4, textAlign: "center", maxWidth: 300 }}>{uiText("Import a file, run reasoning, or merge entities to see activity appear here.")}</div>
           </div>
         ) : (
           filtered.map((entry) => <EntryRow key={entry.id} entry={entry} />)

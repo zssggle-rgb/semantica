@@ -1,3 +1,4 @@
+import { uiText } from "../../i18n";
 export type GraphZoomTier = "overview" | "structure" | "inspection";
 export type GraphNodeVisualState = "default" | "hovered" | "selected" | "neighbor" | "path" | "inactive" | "muted";
 export type GraphEdgeVisualState = "default" | "backbone" | "hovered" | "selected" | "neighbor" | "path" | "inactive" | "muted";
@@ -607,7 +608,7 @@ export const GRAPH_THEME: GraphTheme = {
     },
     entityShapes: {
       entity: {
-        label: "Entity",
+        label: uiText("Entity"),
         shapeKind: 0,
         aspectRatio: 1,
         fillAlpha: 0.9,
@@ -617,7 +618,7 @@ export const GRAPH_THEME: GraphTheme = {
         minSize: 0,
       },
       biomolecule: {
-        label: "Biomolecule",
+        label: uiText("Biomolecule"),
         shapeKind: 1,
         aspectRatio: 1,
         fillAlpha: 0.9,
@@ -627,7 +628,7 @@ export const GRAPH_THEME: GraphTheme = {
         minSize: 1.2,
       },
       condition: {
-        label: "Condition",
+        label: uiText("Condition"),
         shapeKind: 2,
         aspectRatio: 1.04,
         fillAlpha: 0.88,
@@ -637,7 +638,7 @@ export const GRAPH_THEME: GraphTheme = {
         minSize: 1.6,
       },
       compound: {
-        label: "Compound",
+        label: uiText("Compound"),
         shapeKind: 3,
         aspectRatio: 1.48,
         fillAlpha: 0.88,
@@ -647,7 +648,7 @@ export const GRAPH_THEME: GraphTheme = {
         minSize: 1.4,
       },
       process: {
-        label: "Process",
+        label: uiText("Process"),
         shapeKind: 4,
         aspectRatio: 1.1,
         fillAlpha: 0.87,
@@ -657,7 +658,7 @@ export const GRAPH_THEME: GraphTheme = {
         minSize: 1.4,
       },
       community: {
-        label: "Community",
+        label: uiText("Community"),
         shapeKind: 5,
         aspectRatio: 1,
         fillAlpha: 0.68,
@@ -675,9 +676,9 @@ export const GRAPH_THEME: GraphTheme = {
       visibleFrom: "overview",
     },
     badges: {
-      inferred: { color: "#C98658", label: "I" },
-      temporal: { color: "#52CDEF", label: "T" },
-      provenance: { color: "#A289D0", label: "P" },
+      inferred: { color: "#C98658", label: uiText("I") },
+      temporal: { color: "#52CDEF", label: uiText("T") },
+      provenance: { color: "#A289D0", label: uiText("P") },
     },
     badge: {
       radius: 7,

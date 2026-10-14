@@ -1,4 +1,6 @@
 import { uiText } from "../../i18n";
+import { uiLanguage } from "../../i18n";
+import "moment/locale/zh-cn";
 ﻿import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { DataSet } from "vis-data";
 import { Timeline } from "vis-timeline";
@@ -81,6 +83,10 @@ export function TimelinePanel({ onTimeChange, minDate, maxDate }: TimelinePanelP
     if (!timeline) {
       const items = new DataSet([]);
       const options: TimelineOptions = {
+        locale: uiLanguage === "zh-CN" ? "zh-cn" : "en",
+        locales: {
+          "zh-cn": { current: "当前", time: "时间", deleteSelected: "删除所选项" },
+        },
         height: "100%",
         min: minBound,
         max: maxBound,

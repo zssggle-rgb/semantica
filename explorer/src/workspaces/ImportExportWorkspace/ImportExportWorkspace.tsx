@@ -148,7 +148,7 @@ export function ImportExportWorkspace() {
             <div>
               <label className="ws-label">{uiText("Format")}</label>
               <div style={{ display: "flex", gap: 8 }}>
-                {([uiText("json"), uiText("csv")] as const).map((fmt) => (
+                {(["json", "csv"] as const).map((fmt) => (
                   <button
                     key={fmt}
                     className={`ws-btn ${exportFormat === fmt ? "ws-btn--primary" : "ws-btn--ghost"}`}

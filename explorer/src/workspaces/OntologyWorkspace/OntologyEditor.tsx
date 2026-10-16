@@ -227,7 +227,13 @@ function buildEditorElements(apiNodes: OntologyGraphNode[], apiEdges: OntologyGr
 export function OntologyEditor() {
   const [nodes, setNodes, onNodesChange] = useNodesState<OntologyNode>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<OntologyEdge>([]);
-  const [selectedElement, setSelectedElement] = useState<OntologyNode | OntologyEdge | null>(null);
+  const [selection, setSelectedElement] = useState<OntologyNode | OntologyEdge | null>(null);
+  // Read current graph data, not the snapshot captured when selection changed.
+  const selectedElement = selection === null
+    ? null
+    : ("source" in selection
+      ? edges.find((edge) => edge.id === selection.id)
+      : nodes.find((node) => node.id === selection.id)) ?? null;
   const hasDetailPanel = selectedElement !== null;
   const [registry, setRegistry] = useState<RegistryEntry[]>([]);
   const [ontologyUri, setOntologyUri] = useState<string>("");
